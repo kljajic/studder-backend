@@ -2,7 +2,7 @@ package com.studder.service;
 
 import java.util.List;
 
-import com.studder.model.media.Media;
+import com.studder.model.Media;
 
 public interface MediaService {
 

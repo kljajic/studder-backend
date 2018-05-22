@@ -1,21 +1,13 @@
-package com.studder.model.media;
+package com.studder.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.studder.model.User;
 
 @Entity
 public class Media implements Serializable {
@@ -33,12 +25,6 @@ public class Media implements Serializable {
 	
 	@ManyToOne
 	private User user;
-	
-	@OneToMany(mappedBy="media", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Collection<Like> likes;
-	
-	@OneToMany(mappedBy="media", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Collection<Comment> comments;
 	
 	public Media() {
 	}
@@ -99,24 +85,4 @@ public class Media implements Serializable {
 		this.user = user;
 	}
 
-	@JsonIgnore
-	public Collection<Like> getLikes() {
-		return likes;
-	}
-
-	@JsonProperty
-	public void setLikes(Collection<Like> likes) {
-		this.likes = likes;
-	}
-
-	@JsonIgnore
-	public Collection<Comment> getComments() {
-		return comments;
-	}
-
-	@JsonProperty
-	public void setComments(Collection<Comment> comments) {
-		this.comments = comments;
-	}
-	
 }

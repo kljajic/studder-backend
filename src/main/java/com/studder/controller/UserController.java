@@ -1,5 +1,7 @@
 package com.studder.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -20,22 +22,22 @@ import com.studder.service.UserService;
 public class UserController {
 
 	private final UserService userService;
-	
+
 	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@PostMapping
 	public void createUser(@RequestBody @Valid User user) {
 		userService.createUser(user);
 	}
-	
+
 	@GetMapping("/{userId}")
 	public User getUser(@PathVariable("userId") @Valid @NotNull Long userId) {
 		return userService.getUser(userId);
 	}
-	
+
 	@PutMapping
 	public void updateUser(@RequestBody @Valid User user) {
 		userService.updateUser(user);
@@ -45,5 +47,17 @@ public class UserController {
 	public void deactivateAccount(@PathVariable("userId") @Valid @NotNull Long userId) {
 		userService.deactivateAccount();
 	}
+
+	@PostMapping("/location/{userId}/{longitude:.+}/{latitude:.+}")
+	public void setLocationForUser(@PathVariable("userId") @Valid @NotNull Long userId,
+			@PathVariable("longitude") @Valid @NotNull Long longitude,
+			@PathVariable("latitude") @Valid @NotNull Long latitude) {
+		userService.setLocationForUser(userId, longitude, latitude);
+	}
 	
+	@GetMapping("/getForSwipping/{userId}")
+	public List<User> getUsersForSwiping(@PathVariable("userId") @Valid @NotNull Long userId) {
+		return userService.getUsersForSwiping(userId);
+	}
+
 }

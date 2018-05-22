@@ -2,15 +2,15 @@ package com.studder.service;
 
 import java.util.List;
 
-import com.studder.model.Match;
+import com.studder.model.UserMatch;
 
 public interface MatchService {
 
-	void createMatch(Match match);
+	void createMatch(UserMatch match);
 	
-	Match getMathc(Long matchId);
+	UserMatch getMathc(Long matchId);
 	
-	List<Match> getMathces(Long userId);
+	List<UserMatch> getMathces(Long userId);
 	
 	void deleteMathc(Long mathcId);
 	

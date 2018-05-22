@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Match implements Serializable {
+public class UserMatch implements Serializable {
 
 	private static final long serialVersionUID = 8440017360250516589L;
 
@@ -35,10 +35,10 @@ public class Match implements Serializable {
 	@OneToMany(mappedBy="match", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Message> messages;
 
-	public Match() {
+	public UserMatch() {
 	}
 	
-	public Match(Date matchTime, User participant1, User participant2) {
+	public UserMatch(Date matchTime, User participant1, User participant2) {
 		this.matchTime = matchTime;
 		this.participant1 = participant1;
 		this.participant2 = participant2;

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.studder.model.Match;
+import com.studder.model.UserMatch;
 import com.studder.model.Message;
 import com.studder.model.MessageStatus;
 import com.studder.model.User;
@@ -35,7 +35,7 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Override
 	public void createMessage(Message message, Long matchId, Long senderId) {
-		Match match = matchService.getMathc(matchId);
+		UserMatch match = matchService.getMathc(matchId);
 		//sender should be used from Context holder
 		User sender = userService.getUser(senderId);
 		message.setMatch(match);

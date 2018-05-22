@@ -31,7 +31,7 @@ public class Message implements Serializable {
 	private MessageStatus status;
 
 	@ManyToOne
-	private Match match;
+	private UserMatch match;
 
 	@ManyToOne
 	private User sender;
@@ -39,7 +39,7 @@ public class Message implements Serializable {
 	public Message() {
 	}
 
-	public Message(@NotBlank String text, Date timeRecived, @NotNull MessageStatus status, Match match, User sender) {
+	public Message(@NotBlank String text, Date timeRecived, @NotNull MessageStatus status, UserMatch match, User sender) {
 		this.text = text;
 		this.timeRecived = timeRecived;
 		this.status = status;
@@ -79,11 +79,11 @@ public class Message implements Serializable {
 		this.status = status;
 	}
 
-	public Match getMatch() {
+	public UserMatch getMatch() {
 		return match;
 	}
 
-	public void setMatch(Match match) {
+	public void setMatch(UserMatch match) {
 		this.match = match;
 	}
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.studder.model.Match;
+import com.studder.model.UserMatch;
 import com.studder.service.MatchService;
 
 @RestController
@@ -27,7 +27,7 @@ public class MatchController {
 	}
 	
 	@GetMapping("/{userId}")
-	public List<Match> getMatches(@PathVariable("userId") @NotNull @Valid Long userId) {
+	public List<UserMatch> getMatches(@PathVariable("userId") @NotNull @Valid Long userId) {
 		return matchService.getMathces(userId);
 	}
 	
