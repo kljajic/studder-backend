@@ -1,7 +1,7 @@
 package com.studder.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,17 +47,9 @@ public class UserServiceImpl implements UserService {
 		//get user from context holder
 		User user = userRepository.getOne(userId);
 
-		List<User> nonSwipedUsers = new ArrayList<>();
-		System.out.println("USER RADIUS: " + user.getRadius());
-		userRepository.getUsersForSwiping(userId, user.getSwipeThrow()).forEach(nonSwipedUser -> {
-			System.out.println("USER ID:" + nonSwipedUser.getId());
-			System.out.println("DISTANCE: " + calculateDestanceBetweenUsers(userId, nonSwipedUser.getId()));
-			if(calculateDestanceBetweenUsers(userId, nonSwipedUser.getId()) < user.getRadius()) {
-				System.out.println("UDALJENOST ZADOVOLJAVAJUCA");
-				nonSwipedUsers.add(nonSwipedUser);
-			}
-		});
-		return nonSwipedUsers;
+		return userRepository.getUsersForSwiping(user.getId(), user.getSwipeThrow()).stream().filter(
+				userForSwipe -> calculateDestanceBetweenUsers(user.getId(), userForSwipe.getId()) < user.getRadius())
+				.collect(Collectors.toList());
 	}
 	
 	@Override
