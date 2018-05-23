@@ -1,5 +1,7 @@
 package com.studder.service;
 
+import java.util.List;
+
 import com.studder.model.User;
 
 public interface UserService {
@@ -11,5 +13,9 @@ public interface UserService {
 	void updateUser(User user);
 	
 	void deactivateAccount();
+	
+	List<User> getUsersForSwiping(Long userId); 
+	
+	void setLocationForUser(Long userId, double longitude, double latitude);
 	
 }

@@ -1,14 +1,12 @@
 package com.studder.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.studder.model.Match;
+import com.studder.model.UserMatch;
 import com.studder.model.Swipe;
 import com.studder.model.User;
 import com.studder.repository.SwipeRepository;
@@ -48,19 +46,14 @@ public class SwipeServiceImpl implements SwipeService {
 			
 		Swipe otherUserSwiped = this.getExistingSwipeForUsers(likedId, likerId);
 		if(otherUserSwiped != null && otherUserSwiped.getIsLiked()) {
-			Match match = new Match(new Date(), liker, liked);
+			UserMatch match = new UserMatch(new Date(), liker, liked);
 			matchService.createMatch(match);
 		}
 		
 	}
 	
 	@Override
-	public List<User> getUsersForSwipe() {
-		//get users for swiping based on distance and previous swipes and matches
-		return new ArrayList<>();
-	}
-
-	@Override
+	@Transactional(readOnly = true)
 	public Swipe getExistingSwipeForUsers(Long participant1, Long participant2) {
 		return swipeRepository.getSwipeByLikerIdAndLikedId(participant1, participant2);
 	}

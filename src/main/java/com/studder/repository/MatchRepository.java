@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.studder.model.Match;
+import com.studder.model.UserMatch;
 
 @Repository
-public interface MatchRepository extends JpaRepository<Match, Long> {
+public interface MatchRepository extends JpaRepository<UserMatch, Long> {
 
-	@Query("select match from Match match where match.participant1.id = ?1 or match.participant2.id = ?1")
-	List<Match> getMatchesByParticipant1IdOrParticipant2Id(Long participantId);
+	@Query("select match from UserMatch match where match.participant1.id = ?1 or match.participant2.id = ?1")
+	List<UserMatch> getMatchesByParticipant1IdOrParticipant2Id(Long participantId);
 	
 }

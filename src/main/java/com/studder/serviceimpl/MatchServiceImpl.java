@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.studder.model.Match;
+import com.studder.model.UserMatch;
 import com.studder.repository.MatchRepository;
 import com.studder.service.MatchService;
 
@@ -22,17 +22,19 @@ public class MatchServiceImpl implements MatchService {
 	}
 	
 	@Override
-	public void createMatch(Match match) {
+	public void createMatch(UserMatch match) {
 		matchRepository.save(match);
 	}
 
 	@Override
-	public Match getMathc(Long matchId) {
+	@Transactional(readOnly = true)
+	public UserMatch getMathc(Long matchId) {
 		return matchRepository.getOne(matchId);
 	}
 
 	@Override
-	public List<Match> getMathces(Long userId) {
+	@Transactional(readOnly = true)
+	public List<UserMatch> getMathces(Long userId) {
 		//userId should be get from context holder
 		return matchRepository.getMatchesByParticipant1IdOrParticipant2Id(userId);
 	}
