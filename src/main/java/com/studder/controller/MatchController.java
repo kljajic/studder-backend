@@ -26,9 +26,9 @@ public class MatchController {
 		this.matchService = matchService;
 	}
 	
-	@GetMapping("/{userId}")
-	public List<UserMatch> getMatches(@PathVariable("userId") @NotNull @Valid Long userId) {
-		return matchService.getMathces(userId);
+	@GetMapping
+	public List<UserMatch> getMatches() {
+		return matchService.getMathces();
 	}
 	
 	@DeleteMapping("/{matchId}")

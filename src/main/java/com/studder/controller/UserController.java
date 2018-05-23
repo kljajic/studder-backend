@@ -48,11 +48,10 @@ public class UserController {
 		userService.deactivateAccount();
 	}
 
-	@PutMapping("/location/{userId}/{longitude:.+}/{latitude:.+}")
-	public void setLocationForUser(@PathVariable("userId") @Valid @NotNull Long userId,
-			@PathVariable("longitude") @Valid @NotNull Double longitude,
+	@PutMapping("/location/{longitude:.+}/{latitude:.+}")
+	public void setLocationForUser(@PathVariable("longitude") @Valid @NotNull Double longitude,
 			@PathVariable("latitude") @Valid @NotNull Double latitude) {
-		userService.setLocationForUser(userId, longitude, latitude);
+		userService.setLocationForUser(longitude, latitude);
 	}
 	
 	@GetMapping("/getForSwipping/{userId}")

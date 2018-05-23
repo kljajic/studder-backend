@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.studder.model.UserMatch;
+import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.Swipe;
 import com.studder.model.User;
 import com.studder.repository.SwipeRepository;
@@ -32,10 +33,13 @@ public class SwipeServiceImpl implements SwipeService {
 	}
 	
 	@Override
-	public void createSwipe(Long likerId, Long likedId, Boolean isLiked) {
-		//liker should be used from Context holder
-		User liker = userService.getUser(likerId);
+	public void createSwipe(Long likedId, Boolean isLiked) {
+		User liker = userService.getLoggedUser();
 		User liked = userService.getUser(likedId);
+		
+		if(getExistingSwipeForUsers(liker.getId(), liked.getId()) != null) {
+			throw new DataBaseManipulationException("You have already swiped this person.");
+		}
 		
 		Swipe swipe = new Swipe(isLiked, new Date(), liker, liked);
 		swipeRepository.save(swipe);
@@ -44,7 +48,7 @@ public class SwipeServiceImpl implements SwipeService {
 			return;
 		}
 			
-		Swipe otherUserSwiped = this.getExistingSwipeForUsers(likedId, likerId);
+		Swipe otherUserSwiped = this.getExistingSwipeForUsers(likedId, liker.getId());
 		if(otherUserSwiped != null && otherUserSwiped.getIsLiked()) {
 			UserMatch match = new UserMatch(new Date(), liker, liked);
 			matchService.createMatch(match);

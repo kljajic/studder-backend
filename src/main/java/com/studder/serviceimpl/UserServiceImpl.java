@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +42,18 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(User user) {
 
 	}
+	
+	@Override
+	public User findUserByUsername(String username) {
+		return userRepository.findUserByUsername(username);
+	}
 
+	@Override
+	public User getLoggedUser() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return findUserByUsername(username);
+	}
+	
 	@Override
 	public void deactivateAccount() {
 		// get logged user from context holder and deactivate its account
@@ -58,9 +70,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void setLocationForUser(Long userId, double longitude, double latitude) {
-		// get logged user
-		User user = userRepository.getOne(userId);
+	public void setLocationForUser(Double longitude, Double latitude) {
+		User user = getLoggedUser();
 		user.setLongitude(longitude);
 		user.setLatitude(latitude);
 		userRepository.save(user);

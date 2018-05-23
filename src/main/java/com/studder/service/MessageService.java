@@ -6,7 +6,7 @@ import com.studder.model.Message;
 
 public interface MessageService {
 
-	void createMessage(Message message, Long matchId, Long senderId);
+	void createMessage(Message message, Long matchId);
 	
 	Message getMessage(Long messageId);
 	

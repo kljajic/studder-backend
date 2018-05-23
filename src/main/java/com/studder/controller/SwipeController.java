@@ -17,17 +17,16 @@ import com.studder.service.SwipeService;
 public class SwipeController {
 
 	private final SwipeService swipeService;
-	
+
 	@Autowired
 	public SwipeController(SwipeService swipeService) {
 		this.swipeService = swipeService;
 	}
-	
-	@PostMapping("/{likerId}/{likedId}")
-	public void createSwipe(@PathVariable("likerId") @NotNull @Valid Long likerId,
-			@PathVariable("likedId") @NotNull @Valid Long likedId,
+
+	@PostMapping("/{likedId}")
+	public void createSwipe(@PathVariable("likedId") @NotNull @Valid Long likedId,
 			@RequestBody @NotNull @Valid Boolean isLiked) {
-		swipeService.createSwipe(likerId, likedId, isLiked);
+		swipeService.createSwipe(likedId, isLiked);
 	}
-	
+
 }

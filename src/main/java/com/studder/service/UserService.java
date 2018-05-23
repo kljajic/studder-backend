@@ -12,10 +12,14 @@ public interface UserService {
 	
 	void updateUser(User user);
 	
+	User findUserByUsername(String username);
+	
+	User getLoggedUser();
+	
 	void deactivateAccount();
 	
 	List<User> getUsersForSwiping(Long userId); 
 	
-	void setLocationForUser(Long userId, double longitude, double latitude);
+	void setLocationForUser(Double longitude, Double latitude);
 	
 }
