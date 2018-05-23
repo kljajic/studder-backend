@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.User;
 import com.studder.repository.UserRepository;
 import com.studder.service.UserService;
@@ -24,6 +25,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void createUser(User user) {
+		User existingUser = userRepository.findUserByUsername(user.getUsername());
+		if(existingUser != null) {
+			throw new DataBaseManipulationException("User with this username already exists");
+		}
 		userRepository.save(user);
 	}
 

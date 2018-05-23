@@ -26,7 +26,6 @@ public class Message implements Serializable {
 	private String text;
 	private Date timeRecived;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private MessageStatus status;
 
