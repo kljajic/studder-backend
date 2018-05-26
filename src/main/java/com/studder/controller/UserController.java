@@ -54,9 +54,9 @@ public class UserController {
 		userService.setLocationForUser(longitude, latitude);
 	}
 	
-	@GetMapping("/getForSwipping/{userId}")
-	public List<User> getUsersForSwiping(@PathVariable("userId") @Valid @NotNull Long userId) {
-		return userService.getUsersForSwiping(userId);
+	@GetMapping("/getForSwipping")
+	public List<User> getUsersForSwiping() {
+		return userService.getUsersForSwiping();
 	}
 
 }

@@ -35,7 +35,7 @@ public class StudderSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.csrf().disable()
 			.authorizeRequests()
-				.antMatchers("/login", "/logout").permitAll()
+				.antMatchers("/auth/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/users").permitAll()
 				.anyRequest()
 				.authenticated();

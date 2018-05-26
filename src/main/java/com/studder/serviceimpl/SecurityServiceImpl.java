@@ -1,6 +1,7 @@
 package com.studder.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,34 +11,35 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.studder.exception.AuthenticationException;
 import com.studder.model.User;
 import com.studder.service.SecurityService;
+import com.studder.service.UserService;
 
 @Service
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-	private static Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(SecurityServiceImpl.class);
 	
 	private final AuthenticationManager authenticationManager;
-	private final UserDetailsService userDetailsService;
+	private final UserService userService;
 
 	@Autowired
 	public SecurityServiceImpl(AuthenticationManager authenticationManager,
-			UserDetailsService userDetailsService) throws Exception {
+			UserService userService) throws Exception {
 		this.authenticationManager = authenticationManager;
-		this.userDetailsService = userDetailsService;
+		this.userService = userService;
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public void login(User user) {
+		LOGGER.info("Authenticating user " + user.getUsername());
 		try {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+			UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
 	
 			Authentication authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
 					user.getPassword(), new ArrayList<>());
@@ -45,18 +47,48 @@ public class SecurityServiceImpl implements SecurityService {
 			authenticationManager.authenticate(authenticationToken);
 	
 			if (authenticationToken.isAuthenticated()) {
-				logger.info("User " + user.getUsername() + " successfully authenticated.");
+				LOGGER.info("User " + user.getUsername() + " successfully authenticated");
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				setOnlineStatus();
 			}
 		}catch (Exception e) {
-			logger.error("Error while executing user authentication. " + e.getMessage());
+			LOGGER.error("Error while executing user authentication. " + e.getMessage());
+			throw new AuthenticationException("Error while executing user authentication. " + e.getMessage());
 		}
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public void logout() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication == null) {
+			return;
+		}
+		
+		LOGGER.info(authentication.getName() + " is logging out");
+		setLastOnlineStatus();
 		SecurityContextHolder.getContext().setAuthentication(null);
+		LOGGER.info("User " + authentication.getName() + " logged out");
+	}
+	
+	private void setOnlineStatus() {
+		User user = userService.getLoggedUser();
+		LOGGER.info("Updating online status for " + user.getUsername());
+		user.setOnlineStatus(true);
+		userService.updateUser(user);
+		LOGGER.info("User's " + user.getUsername() + " online status is successfully updated");
+	}
+	
+	private void setLastOnlineStatus() {
+		User user = userService.getLoggedUser();
+		if(user == null) {
+			return;
+		}
+		
+		LOGGER.info("Updating online status for " + user.getUsername());
+		user.setOnlineStatus(false);
+		user.setLastOnline(new Date());
+		userService.updateUser(user);
+		LOGGER.info("User's " + user.getUsername() + " online status is successfully updated");
 	}
 
 }
