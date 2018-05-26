@@ -2,15 +2,16 @@ package com.studder.service;
 
 import java.util.List;
 
+import com.studder.dto.MediaDto;
 import com.studder.model.Media;
 
 public interface MediaService {
 
-	void createMedia(Media media);
+	void createMedia(String fileName, Long size, byte[] bytes, String description, String contentType);
 	
-	Media getMedia(Long mediaId);
+	MediaDto getMedia(Long mediaId);
 	
-	List<Media> getMediasForUser(Long userId);
+	List<Media> getMediasForUser();
 	
 	void deleteMedia(Long mediaId);
 	

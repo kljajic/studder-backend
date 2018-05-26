@@ -18,10 +18,12 @@ public class Media implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String path;
+	private String name;
+	private String contentType;
+	private Long size;
 	private String description;
 	private Date timeAdded;
-	private Boolean isPrivate;
+	private String path;
 	
 	@ManyToOne
 	private User user;
@@ -29,11 +31,14 @@ public class Media implements Serializable {
 	public Media() {
 	}
 	
-	public Media(String path, String description, Date timeAdded, Boolean isPrivate, User user) {
-		this.path = path;
+	public Media(String name, String contentType, Long size, String description, Date timeAdded, String path,
+			User user) {
+		this.name = name;
+		this.contentType = contentType;
+		this.size = size;
 		this.description = description;
 		this.timeAdded = timeAdded;
-		this.isPrivate = isPrivate;
+		this.path = path;
 		this.user = user;
 	}
 
@@ -45,14 +50,30 @@ public class Media implements Serializable {
 		this.id = id;
 	}
 
-	public String getPath() {
-		return path;
+	public String getName() {
+		return name;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getContentType() {
+		return contentType;
 	}
 
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -69,14 +90,6 @@ public class Media implements Serializable {
 		this.timeAdded = timeAdded;
 	}
 
-	public Boolean getIsPrivate() {
-		return isPrivate;
-	}
-
-	public void setIsPrivate(Boolean isPrivate) {
-		this.isPrivate = isPrivate;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -85,4 +98,12 @@ public class Media implements Serializable {
 		this.user = user;
 	}
 
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
 }
