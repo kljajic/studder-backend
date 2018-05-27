@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +27,12 @@ public class UserServiceImpl implements UserService {
 	private static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -44,6 +47,8 @@ public class UserServiceImpl implements UserService {
 		user.setIsDeactivated(false);
 		user.setLastOnline(new Date());
 		user.setOnlineStatus(false);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		System.out.println("PW JE: " + user.getPassword());
 		userRepository.save(user);
 		LOGGER.info("User " + user.getUsername() + " is successfully created");
 	}

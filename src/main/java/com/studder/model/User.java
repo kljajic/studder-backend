@@ -32,31 +32,31 @@ public class User implements Serializable {
 	private String username;
 	@NotBlank
 	private String password;
-	@NotBlank
+	//@NotBlank
 	private String name;
-	@NotBlank
+	//@NotBlank
 	private String surname;
 	private String description;
-	@NotNull
+	//@NotNull
 	private Date birthday;
 	private Boolean onlineStatus;
 	private Date lastOnline;
-	@NotNull
+	//@NotNull
 	private Short radius;
 	private Double latitude;
 	private Double longitude;
 	private Date profileCreated;
-	@NotNull
+	//@NotNull
 	private Boolean shareLocation;
-	@NotNull
+	//@NotNull
 	private Boolean isPrivate;
 	private Boolean isDeactivated;
 	
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private Gender userGender;
 	
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private Gender swipeThrow;
 	
