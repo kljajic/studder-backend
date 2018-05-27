@@ -10,7 +10,7 @@ public interface MatchService {
 	
 	UserMatch getMathc(Long matchId);
 	
-	List<UserMatch> getMathces(Long userId);
+	List<UserMatch> getMathces();
 	
 	void deleteMathc(Long mathcId);
 	

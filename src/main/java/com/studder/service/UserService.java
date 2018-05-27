@@ -2,9 +2,11 @@ package com.studder.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.studder.model.User;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
 	void createUser(User user);
 	
@@ -12,10 +14,14 @@ public interface UserService {
 	
 	void updateUser(User user);
 	
+	User findUserByUsername(String username);
+	
+	User getLoggedUser();
+	
 	void deactivateAccount();
 	
-	List<User> getUsersForSwiping(Long userId); 
+	List<User> getUsersForSwiping(); 
 	
-	void setLocationForUser(Long userId, double longitude, double latitude);
+	void setLocationForUser(Double longitude, Double latitude);
 	
 }

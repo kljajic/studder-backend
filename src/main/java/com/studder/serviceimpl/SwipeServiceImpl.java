@@ -2,11 +2,14 @@ package com.studder.serviceimpl;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.studder.model.UserMatch;
+import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.Swipe;
 import com.studder.model.User;
 import com.studder.repository.SwipeRepository;
@@ -18,6 +21,8 @@ import com.studder.service.UserService;
 @Transactional
 public class SwipeServiceImpl implements SwipeService {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(SwipeServiceImpl.class);
+	
 	private final SwipeRepository swipeRepository;
 	private final UserService userService;
 	private final MatchService matchService;
@@ -32,22 +37,31 @@ public class SwipeServiceImpl implements SwipeService {
 	}
 	
 	@Override
-	public void createSwipe(Long likerId, Long likedId, Boolean isLiked) {
-		//liker should be used from Context holder
-		User liker = userService.getUser(likerId);
+	public void createSwipe(Long likedId, Boolean isLiked) {
+		User liker = userService.getLoggedUser();
 		User liked = userService.getUser(likedId);
+		LOGGER.info("Creating swipe for users: " + liker.getUsername() + ", and " + liked.getUsername());
+		
+		if(getExistingSwipeForUsers(liker.getId(), liked.getId()) != null) {
+			LOGGER.info(liker.getUsername() + "have already swiped " + liked.getUsername());
+			throw new DataBaseManipulationException(liker.getUsername() + "have already swiped " + liked.getUsername());
+		}
 		
 		Swipe swipe = new Swipe(isLiked, new Date(), liker, liked);
 		swipeRepository.save(swipe);
+		
+		LOGGER.info("Swipe is successfully created");
 		
 		if(!isLiked) {
 			return;
 		}
 			
-		Swipe otherUserSwiped = this.getExistingSwipeForUsers(likedId, likerId);
+		Swipe otherUserSwiped = this.getExistingSwipeForUsers(likedId, liker.getId());
 		if(otherUserSwiped != null && otherUserSwiped.getIsLiked()) {
+			LOGGER.info(liked.getUsername() + "have already liked " + liker.getUsername() + ". Creating new mathc");
 			UserMatch match = new UserMatch(new Date(), liker, liked);
 			matchService.createMatch(match);
+			LOGGER.info("Mathc is successfully created");
 		}
 		
 	}
@@ -55,7 +69,9 @@ public class SwipeServiceImpl implements SwipeService {
 	@Override
 	@Transactional(readOnly = true)
 	public Swipe getExistingSwipeForUsers(Long participant1, Long participant2) {
-		return swipeRepository.getSwipeByLikerIdAndLikedId(participant1, participant2);
+		LOGGER.info("Fetching existing swipe for users with id: " + participant1 + ", and " + participant2);
+		Swipe existingSwipe = swipeRepository.getSwipeByLikerIdAndLikedId(participant1, participant2);
+		return existingSwipe;
 	}
 
 }

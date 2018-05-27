@@ -1,9 +1,16 @@
 package com.studder.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +23,10 @@ import com.studder.service.UserService;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	private final UserRepository userRepository;
-
+	
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -25,45 +34,99 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void createUser(User user) {
+		LOGGER.info("Creating user with username " + user.getUsername() + " to studder system");
 		User existingUser = userRepository.findUserByUsername(user.getUsername());
 		if(existingUser != null) {
-			throw new DataBaseManipulationException("User with this username already exists");
+			LOGGER.error("User with given username already exists");
+			throw new DataBaseManipulationException("User with given username already exists");
 		}
+		user.setProfileCreated(new Date());
+		user.setIsDeactivated(false);
+		user.setLastOnline(new Date());
+		user.setOnlineStatus(false);
 		userRepository.save(user);
+		LOGGER.info("User " + user.getUsername() + " is successfully created");
 	}
 
 	@Override
 	public User getUser(Long userId) {
-		return userRepository.getOne(userId);
+		LOGGER.info("Fetching user based on id " + userId);
+		User user = userRepository.getOne(userId);
+		LOGGER.info("User  " + user.getUsername() + " is successfully fetched");
+		return user;
 	}
 
 	@Override
 	public void updateUser(User user) {
-
-	}
-
-	@Override
-	public void deactivateAccount() {
-		// get logged user from context holder and deactivate its account
-	}
-
-	@Override
-	public List<User> getUsersForSwiping(Long userId) {
-		//get user from context holder
-		User user = userRepository.getOne(userId);
-
-		return userRepository.getUsersForSwiping(user.getId(), user.getSwipeThrow()).stream().filter(
-				userForSwipe -> calculateDestanceBetweenUsers(user.getId(), userForSwipe.getId()) < user.getRadius())
-				.collect(Collectors.toList());
+		LOGGER.info("Updating user with username " + user.getUsername());
+		User existingUser = userRepository.findUserByUsername(user.getUsername());
+		if(existingUser == null) {
+			LOGGER.error("Given username could not be found");
+			throw new DataBaseManipulationException("User with " + user.getUsername() + "doesn't exist.");
+		}
+		
+		existingUser.setBirthday(user.getBirthday());
+		existingUser.setDescription(user.getDescription());
+		existingUser.setIsPrivate(user.getIsPrivate());
+		existingUser.setName(existingUser.getName());
+		existingUser.setRadius(user.getRadius());
+		existingUser.setShareLocation(user.getShareLocation());
+		existingUser.setSurname(existingUser.getUsername());
+		existingUser.setUserGender(user.getUserGender());
+		existingUser.setSwipeThrow(user.getSwipeThrow());
+		LOGGER.info("User with " + user.getUsername() + " username is successfully updated");
 	}
 	
 	@Override
-	public void setLocationForUser(Long userId, double longitude, double latitude) {
-		// get logged user
-		User user = userRepository.getOne(userId);
+	public User findUserByUsername(String username) {
+		LOGGER.info("Fetching user by username " + username);
+		User user = userRepository.findUserByUsername(username);
+		if(user == null) {
+			LOGGER.info("User with username " + username + " could not be found");
+		}else {
+			LOGGER.info("User with username " + username + " is successfully fetched");
+		}
+		return user;
+	}
+
+	@Override
+	public User getLoggedUser() {
+		LOGGER.info("Fetching logged user");
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return findUserByUsername(username);
+	}
+	
+	@Override
+	public void deactivateAccount() {
+		User user = getLoggedUser();
+		LOGGER.info("Deactivating " + user.getUsername() + " account");
+		user.setIsDeactivated(true);
+		userRepository.save(user);
+		LOGGER.info("Deactivation of " + user.getUsername() + "account is successfully finished");
+	}
+
+	@Override
+	public List<User> getUsersForSwiping() {
+		User user = getLoggedUser();
+		LOGGER.info("Fetching users for swiping for user " + user.getUsername());
+		
+		List<User> usersForSwipping = userRepository.getUsersForSwiping(user.getId(), user.getSwipeThrow()).stream()
+				.filter(userForSwipe -> calculateDestanceBetweenUsers(user.getId(), userForSwipe.getId()) < user
+						.getRadius())
+				.collect(Collectors.toList());
+		
+		LOGGER.info("Users are successfully fetched");
+		return usersForSwipping;
+	}
+	
+	@Override
+	public void setLocationForUser(Double longitude, Double latitude) {
+		User user = getLoggedUser();
+		LOGGER.info("Updating user " + user.getUsername() + " coordinates");
 		user.setLongitude(longitude);
 		user.setLatitude(latitude);
 		userRepository.save(user);
+		LOGGER.info("User coordinates fo user " + user.getUsername() + " are successfully updated");
 	}
 
 	private double calculateDestanceBetweenUsers(Long user1Id, Long user2Id) {
@@ -101,6 +164,20 @@ public class UserServiceImpl implements UserService {
 	 */
 	private double rad2deg(double rad) {
 		return (rad * 180.0 / Math.PI);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = findUserByUsername(username);
+
+		if (user == null) {
+			return null;
+		}
+
+		UserDetails userDetails = (UserDetails) new org.springframework.security.core.userdetails.User(
+				user.getUsername(), user.getPassword(), new ArrayList<>());
+		return userDetails;
 	}
 
 }
