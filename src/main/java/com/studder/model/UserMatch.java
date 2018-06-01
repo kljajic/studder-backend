@@ -25,6 +25,11 @@ public class UserMatch implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Date matchTime;
+	private String lastMessage;
+	private Boolean lastMessageSeen;
+	private Date lastMessageDate;
+	private Boolean mutedParticipant1;
+	private Boolean mutedParticipant2;
 	
 	@ManyToOne
 	private User participant1;
@@ -74,6 +79,46 @@ public class UserMatch implements Serializable {
 
 	public void setParticipant2(User participant2) {
 		this.participant2 = participant2;
+	}
+
+	public String getLastMessage() {
+		return lastMessage;
+	}
+
+	public void setLastMessage(String lastMessage) {
+		this.lastMessage = lastMessage;
+	}
+	
+	public Boolean getLastMessageSeen() {
+		return lastMessageSeen;
+	}
+
+	public void setLastMessageSeen(Boolean lastMessageSeen) {
+		this.lastMessageSeen = lastMessageSeen;
+	}
+
+	public Boolean getMutedParticipant1() {
+		return mutedParticipant1;
+	}
+
+	public void setMutedParticipant1(Boolean mutedParticipant1) {
+		this.mutedParticipant1 = mutedParticipant1;
+	}
+
+	public Boolean getMutedParticipant2() {
+		return mutedParticipant2;
+	}
+
+	public void setMutedParticipant2(Boolean mutedParticipant2) {
+		this.mutedParticipant2 = mutedParticipant2;
+	}
+	
+	public Date getLastMessageDate() {
+		return lastMessageDate;
+	}
+
+	public void setLastMessageDate(Date lastMessageDate) {
+		this.lastMessageDate = lastMessageDate;
 	}
 
 	@JsonIgnore

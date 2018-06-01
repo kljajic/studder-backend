@@ -49,6 +49,14 @@ public class MessageServiceImpl implements MessageService {
 		message.setTimeRecived(new Date());
 		message.setSender(sender);
 		messageRepository.save(message);
+		
+		LOGGER.info("Match for message updating -> lastMessage, lastMessageSeen for matchId " + matchId);
+		match.setLastMessage(message.getText());
+		match.setLastMessageSeen(false);
+		match.setLastMessageDate(message.getTimeRecived());;
+		matchService.createMatch(match);
+		LOGGER.info("Match for message updated -> lastMessage, lastMessageSeen for matchId " + matchId);
+		
 		LOGGER.info("Message for " + matchId + " is successfully created");
 	}
 
