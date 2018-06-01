@@ -70,15 +70,24 @@ public class UserServiceImpl implements UserService {
 			throw new DataBaseManipulationException("User with " + user.getUsername() + "doesn't exist.");
 		}
 		
-		existingUser.setBirthday(user.getBirthday());
-		existingUser.setDescription(user.getDescription());
-		existingUser.setIsPrivate(user.getIsPrivate());
-		existingUser.setName(existingUser.getName());
-		existingUser.setRadius(user.getRadius());
-		existingUser.setShareLocation(user.getShareLocation());
-		existingUser.setSurname(existingUser.getUsername());
-		existingUser.setUserGender(user.getUserGender());
-		existingUser.setSwipeThrow(user.getSwipeThrow());
+		//existingUser.setBirthday(user.getBirthday());
+		if(user.getDescription() != null)
+			existingUser.setDescription(user.getDescription());
+		if(user.getIsPrivate() != null)
+			existingUser.setIsPrivate(user.getIsPrivate());
+		if(user.getName() != null)
+			existingUser.setName(user.getName());
+		if(user.getRadius() != null)
+			existingUser.setRadius(user.getRadius());
+		if(user.getShareLocation() != null)
+			existingUser.setShareLocation(user.getShareLocation());
+		if(user.getSurname() != null)
+			existingUser.setSurname(user.getUsername());
+		if(user.getUserGender() != null)
+			existingUser.setUserGender(user.getUserGender());
+		if(user.getSwipeThrow() != null)
+			existingUser.setSwipeThrow(user.getSwipeThrow());
+		userRepository.save(existingUser);
 		LOGGER.info("User with " + user.getUsername() + " username is successfully updated");
 	}
 	

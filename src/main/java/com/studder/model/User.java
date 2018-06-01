@@ -30,7 +30,7 @@ public class User implements Serializable {
 	private Long id;
 	@NotBlank
 	private String username;
-	@NotBlank
+	//@NotBlank
 	private String password;
 	//@NotBlank
 	private String name;
@@ -53,6 +53,8 @@ public class User implements Serializable {
 	private Boolean isDeactivated;
 	
 	private String city;
+	
+	private String newPw;
 	
 	//@NotNull
 	@Enumerated(EnumType.STRING)
@@ -308,4 +310,12 @@ public class User implements Serializable {
 		this.city = city;
 	}
 
+	public String getNewPw() {
+		return newPw;
+	}
+
+	public void setNewPw(String newPw) {
+		this.newPw = newPw;
+	}
+	
 }
