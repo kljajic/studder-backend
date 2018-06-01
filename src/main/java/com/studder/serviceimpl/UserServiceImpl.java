@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 			LOGGER.error("Given username could not be found");
 			throw new DataBaseManipulationException("User with " + user.getUsername() + "doesn't exist.");
 		}
-		
+		//password needs to be updated...
 		//existingUser.setBirthday(user.getBirthday());
 		if(user.getDescription() != null)
 			existingUser.setDescription(user.getDescription());
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		if(user.getShareLocation() != null)
 			existingUser.setShareLocation(user.getShareLocation());
 		if(user.getSurname() != null)
-			existingUser.setSurname(user.getUsername());
+			existingUser.setSurname(user.getSurname());
 		if(user.getUserGender() != null)
 			existingUser.setUserGender(user.getUserGender());
 		if(user.getSwipeThrow() != null)
