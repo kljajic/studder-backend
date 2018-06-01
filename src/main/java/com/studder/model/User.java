@@ -52,6 +52,8 @@ public class User implements Serializable {
 	private Boolean isPrivate;
 	private Boolean isDeactivated;
 	
+	private String city;
+	
 	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private Gender userGender;
@@ -296,6 +298,14 @@ public class User implements Serializable {
 	@JsonProperty
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }
