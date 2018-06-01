@@ -63,4 +63,12 @@ public class MatchServiceImpl implements MatchService {
 		LOGGER.info("Match with id " + mathcId + " is successfully deleted");
 	}
 
+	@Override
+	public List<UserMatch> getMatches(Long userId) {
+		LOGGER.info("Retrieving matches related with user id " + userId);
+		List<UserMatch> userMatches =  matchRepository.getMatchesByParticipant1IdOrParticipant2Id(userId);
+		LOGGER.info("Matches related with user id " + userId + " successfully retrieved");
+		return userMatches;
+	}
+
 }

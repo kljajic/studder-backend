@@ -14,4 +14,6 @@ public interface MatchService {
 	
 	void deleteMathc(Long mathcId);
 	
+	List<UserMatch> getMatches(Long userId);
+	
 }

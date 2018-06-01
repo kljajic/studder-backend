@@ -22,8 +22,9 @@ public class SecurityController {
 	}
 	
 	@PostMapping("/login")
-	public void login(@RequestBody User user) {
-		securityService.login(user);
+	public User login(@RequestBody User user) {
+		User u = securityService.login(user);
+		return u;
 	}
 	
 	@GetMapping("/logout")

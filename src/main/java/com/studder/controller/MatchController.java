@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studder.model.UserMatch;
@@ -34,6 +35,12 @@ public class MatchController {
 	@DeleteMapping("/{matchId}")
 	public void deleteMatch(@PathVariable("matchId") @NotNull @Valid Long matchId) {
 		matchService.deleteMathc(matchId);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/getMatches/{userId}")
+	public List<UserMatch> getMatches(@PathVariable("userId") @NotNull @Valid Long userId){
+		List<UserMatch> matches = matchService.getMatches(userId);
+		return matches;
 	}
 	
 }

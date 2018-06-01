@@ -36,7 +36,7 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public void login(User user) {
+	public User login(User user) {
 		LOGGER.info("Authenticating user " + user.getUsername());
 		try {
 			UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
@@ -50,11 +50,14 @@ public class SecurityServiceImpl implements SecurityService {
 				LOGGER.info("User " + user.getUsername() + " successfully authenticated");
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 				setOnlineStatus();
+				User returnUser = userService.findUserByUsername(user.getUsername());
+				return returnUser;
 			}
 		}catch (Exception e) {
 			LOGGER.error("Error while executing user authentication. " + e.getMessage());
 			throw new AuthenticationException("Error while executing user authentication. " + e.getMessage());
 		}
+		return null;
 	}
 
 	@Override

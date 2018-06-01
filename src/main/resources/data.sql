@@ -22,3 +22,18 @@ insert into user(id, birthday, description, is_deactivated, is_private, last_onl
 	
 --INSERT USER SWIPES INTO DB
 insert into swipe(id, is_liked, time_swiped, liked_id, liker_id) values (1, true, '2018-05-22', 2, 1);
+
+insert into user_match(id, participant1_id, participant2_id) values (1, 1, 2);
+insert into user_match(id, participant1_id, participant2_id) values (2, 1, 3);
+
+insert into user_match(id, participant1_id, participant2_id) values (3, 2, 3);
+insert into user_match(id, participant1_id, participant2_id) values (4, 2, 4);
+insert into user_match(id, participant1_id, participant2_id) values (5, 2, 5);
+
+insert into user_match(id, participant1_id, participant2_id) values (6, 3, 4);
+insert into user_match(id, participant1_id, participant2_id) values (7, 3, 5);
+insert into user_match(id, participant1_id, participant2_id) values (8, 3, 6);
+insert into user_match(id, participant1_id, participant2_id) values (9, 3, 7);
+
+insert into user_match(id, participant1_id, participant2_id) values (10, 4, 5);
+insert into user_match(id, participant1_id, participant2_id) values (11, 4, 6);
