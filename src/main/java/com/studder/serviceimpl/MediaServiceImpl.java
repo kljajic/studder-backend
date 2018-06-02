@@ -1,6 +1,7 @@
 package com.studder.serviceimpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,8 @@ public class MediaServiceImpl implements MediaService {
 
 	@Override
 	public Media getMedia(Long mediaId) {
-		return mediaRepository.getOne(mediaId);
+		Optional<Media> media = mediaRepository.findById(mediaId);
+		return media.get();
 	}
 
 	@Override

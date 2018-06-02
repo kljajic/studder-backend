@@ -38,7 +38,7 @@ public class MatchController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="/getMatches/{userId}")
-	public List<UserMatch> getMatches(@PathVariable("userId") @NotNull @Valid Long userId){
+	public List<UserMatch> getMatches(@PathVariable("userId") @NotNull Long userId){
 		List<UserMatch> matches = matchService.getMatches(userId);
 		return matches;
 	}
