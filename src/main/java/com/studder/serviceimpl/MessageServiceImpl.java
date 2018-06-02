@@ -46,14 +46,14 @@ public class MessageServiceImpl implements MessageService {
 		LOGGER.info("Creating new message for mathc " + matchId + ". Sender: " + sender.getUsername());
 		message.setMatch(match);
 		message.setStatus(MessageStatus.DELIVERED);
-		message.setTimeRecived(new Date());
+		message.setTimeRecieved(new Date());
 		message.setSender(sender);
 		messageRepository.save(message);
 		
 		LOGGER.info("Match for message updating -> lastMessage, lastMessageSeen for matchId " + matchId);
 		match.setLastMessage(message.getText());
 		match.setLastMessageSeen(false);
-		match.setLastMessageDate(message.getTimeRecived());;
+		match.setLastMessageDate(message.getTimeRecieved());;
 		matchService.createMatch(match);
 		LOGGER.info("Match for message updated -> lastMessage, lastMessageSeen for matchId " + matchId);
 		
@@ -93,7 +93,7 @@ public class MessageServiceImpl implements MessageService {
 		
 		updateMessage.setText(message.getText());
 		updateMessage.setStatus(MessageStatus.DELIVERED);
-		updateMessage.setTimeRecived(new Date());
+		updateMessage.setTimeRecieved(new Date());
 		messageRepository.save(updateMessage);
 		LOGGER.info("Message with id " + updateMessage.getId() + " is successfully updated");
 	}

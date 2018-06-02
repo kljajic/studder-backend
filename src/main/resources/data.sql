@@ -44,3 +44,16 @@ insert into media(id, path, description, time_added, is_private, user_id) values
 insert into media(id, path, description, time_added, is_private, user_id) values (4, "media/png4.jpg", "Some description 4", '2018-05-05', false, 1);
 insert into media(id, path, description, time_added, is_private, user_id) values (5, "media/png5.jpg", "Some description 5", '2018-05-05', false, 1);
 insert into media(id, path, description, time_added, is_private, user_id) values (6, "media/png6.jpg", "Some description 6", '2018-05-05', false, 1);
+
+
+--INSERT MESSAGES INTO DB
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (1,'DELIVERED','Cao brate.','2018-06-02 10:00',1,2);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (2,'DELIVERED','Sta ima?','2018-06-02 11:00',1,2);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (3,'DELIVERED','Evo nista.','2018-06-02 12:00',1,1);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (4,'DELIVERED','Ti?','2018-06-02 13:00',1,1);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (5,'DELIVERED','Uzivam kuci.','2018-06-02 14:00',1,2);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (6,'DELIVERED','Odmaram.','2018-06-02 15:00',1,2);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (7,'DELIVERED','Super','2018-06-02 16:00',1,1);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (8,'DELIVERED','Vidimo se sutra','2018-06-02 17:00',1,1);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (9,'DELIVERED','Dogovoreno.','2018-06-02 18:00',1,2);
+insert into message(id,status,text,time_recieved,match_id,sender_id) values (10,'DELIVERED','Ok.','2018-06-02 19:00',1,2);

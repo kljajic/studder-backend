@@ -24,7 +24,7 @@ public class Message implements Serializable {
 	
 	@NotBlank
 	private String text;
-	private Date timeRecived;
+	private Date timeRecieved;
 
 	@Enumerated(EnumType.STRING)
 	private MessageStatus status;
@@ -38,9 +38,9 @@ public class Message implements Serializable {
 	public Message() {
 	}
 
-	public Message(@NotBlank String text, Date timeRecived, @NotNull MessageStatus status, UserMatch match, User sender) {
+	public Message(@NotBlank String text, Date timeRecieved, @NotNull MessageStatus status, UserMatch match, User sender) {
 		this.text = text;
-		this.timeRecived = timeRecived;
+		this.timeRecieved = timeRecieved;
 		this.status = status;
 		this.match = match;
 		this.sender = sender;
@@ -62,12 +62,12 @@ public class Message implements Serializable {
 		this.text = text;
 	}
 
-	public Date getTimeRecived() {
-		return timeRecived;
+	public Date getTimeRecieved() {
+		return timeRecieved;
 	}
 
-	public void setTimeRecived(Date timeRecived) {
-		this.timeRecived = timeRecived;
+	public void setTimeRecieved(Date timeRecieved) {
+		this.timeRecieved = timeRecieved;
 	}
 
 	public MessageStatus getStatus() {
