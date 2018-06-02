@@ -30,7 +30,7 @@ public class User implements Serializable {
 	private Long id;
 	@NotBlank
 	private String username;
-	@NotBlank
+	//@NotBlank
 	private String password;
 	//@NotBlank
 	private String name;
@@ -54,6 +54,8 @@ public class User implements Serializable {
 	private String profileImage;
 	
 	private String city;
+	
+	private String newPw;
 	
 	//@NotNull
 	@Enumerated(EnumType.STRING)
@@ -315,6 +317,14 @@ public class User implements Serializable {
 
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
+  }
+  
+	public String getNewPw() {
+		return newPw;
+	}
+
+	public void setNewPw(String newPw) {
+		this.newPw = newPw;
 	}
 	
 }

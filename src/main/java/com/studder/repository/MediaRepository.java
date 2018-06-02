@@ -10,6 +10,7 @@ import com.studder.model.Media;
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
 	
+	Media findMediaByName(String name);
 	List<Media> getMediaByUserId(Long userId);
 	
 }

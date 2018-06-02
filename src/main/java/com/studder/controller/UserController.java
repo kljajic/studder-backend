@@ -38,8 +38,8 @@ public class UserController {
 		return userService.getUser(userId);
 	}
 
-	@PutMapping
-	public void updateUser(@RequestBody @Valid User user) {
+	@PostMapping("/update")
+	public void updateUser(@RequestBody User user) {
 		userService.updateUser(user);
 	}
 

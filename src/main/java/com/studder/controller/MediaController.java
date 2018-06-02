@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.studder.model.Media;
 import com.studder.model.User;
@@ -33,6 +34,7 @@ public class MediaController {
 	private final MediaService mediaService;
 	private final UserService userService;
 	
+  @Autowired
 	public MediaController(MediaService mediaService, UserService userService) {
 		this.mediaService = mediaService;
 		this.userService = userService;
@@ -117,15 +119,45 @@ public class MediaController {
 		return null;
 	}
 	
-	public static BufferedImage resize(BufferedImage img, int newW, int newH) {
-		  
+	public static BufferedImage resize(BufferedImage img, int newW, int newH) {  
 		BufferedImage newImage = new BufferedImage(80, 80, BufferedImage.TYPE_INT_RGB);
-
 		Graphics g = newImage.createGraphics();
 		g.drawImage(img, 0, 0, 80, 80, null);
 		g.dispose();
 		return img;
+  }
+	
+	@PostMapping("/{description:.+}")
+	public void createMedia(@PathVariable("description") @Valid @NotEmpty String description,
+			@RequestParam("file") MultipartFile file) throws IOException {
+		mediaService.createMedia(file.getOriginalFilename(), file.getSize(), file.getBytes(), file.getContentType(),
+				description);
+	}
+	
+	@GetMapping("/{mediaId}")
+	public ResponseEntity<?> getMedia(@PathVariable("mediaId") @Valid @NonNull Long mediaId) {
+		MediaDto media = mediaService.getMedia(mediaId);
 		
+		InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(media.getBytes()));
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", String.format("attachment: filename=\"%s\"", media.getFilename()));
+		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+		headers.add("Pragma", "no-cache");
+		headers.add("Expires", "0");
+		
+		return ResponseEntity.ok().headers(headers).contentLength(media.getSize())
+				.contentType(MediaType.parseMediaType(media.getContentType())).body(resource);
+	}
+	
+	@GetMapping
+	public List<Media> getMediaForUser() {
+		return mediaService.getMediasForUser();
+	}
+	
+	@DeleteMapping("/{mediaId}")
+	public void deleteMedia(@PathVariable("mediaId") @Valid @NonNull Long mediaId) {
+		mediaService.deleteMedia(mediaId);
 	}
 	
 }
