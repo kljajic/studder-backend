@@ -12,7 +12,7 @@ public interface UserService extends UserDetailsService {
 	
 	User getUser(Long userId);
 	
-	void updateUser(User user);
+	String updateUser(User user);
 	
 	User findUserByUsername(String username);
 	

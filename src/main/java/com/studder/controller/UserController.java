@@ -39,8 +39,8 @@ public class UserController {
 	}
 
 	@PostMapping("/update")
-	public void updateUser(@RequestBody User user) {
-		userService.updateUser(user);
+	public String updateUser(@RequestBody User user) {
+		return userService.updateUser(user);
 	}
 
 	@PutMapping("/deactivate")

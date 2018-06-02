@@ -62,14 +62,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(User user) {
+	public String updateUser(User user) {
+		//change return type to boolean, so user can know if he successfully changed his password...
 		LOGGER.info("Updating user with username " + user.getUsername());
 		User existingUser = userRepository.findUserByUsername(user.getUsername());
 		if(existingUser == null) {
 			LOGGER.error("Given username could not be found");
 			throw new DataBaseManipulationException("User with " + user.getUsername() + "doesn't exist.");
 		}
-		//password needs to be updated...
 		//existingUser.setBirthday(user.getBirthday());
 		if(user.getDescription() != null)
 			existingUser.setDescription(user.getDescription());
@@ -87,8 +87,16 @@ public class UserServiceImpl implements UserService {
 			existingUser.setUserGender(user.getUserGender());
 		if(user.getSwipeThrow() != null)
 			existingUser.setSwipeThrow(user.getSwipeThrow());
+		if(user.getNewPw() != null && user.getPassword() != null){
+			if(passwordEncoder.matches(user.getPassword(), existingUser.getPassword())){
+				existingUser.setPassword(passwordEncoder.encode(user.getNewPw()));
+			} else{
+				return "-1";
+			}
+		}
 		userRepository.save(existingUser);
 		LOGGER.info("User with " + user.getUsername() + " username is successfully updated");
+		return "1";
 	}
 	
 	@Override
