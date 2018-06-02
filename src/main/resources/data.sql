@@ -37,3 +37,10 @@ insert into user_match(id, participant1_id, participant2_id, last_message, last_
 
 insert into user_match(id, participant1_id, participant2_id, last_message, last_message_seen, muted_participant1, muted_participant2, last_message_date) values (10, 4, 5, "Hi, this is a message 10", false, false, false, '2018-05-22');
 insert into user_match(id, participant1_id, participant2_id, last_message, last_message_seen, muted_participant1, muted_participant2, last_message_date) values (11, 4, 6, "Hi, this is a message 11", false, false, false, '2018-05-22');
+
+insert into media(id, path, description, time_added, is_private, user_id) values (1, "media/png1.jpg", "Some description 1", '2018-05-05', false, 1);
+insert into media(id, path, description, time_added, is_private, user_id) values (2, "media/png2.jpg", "Some description 2", '2018-05-05', false, 1);
+insert into media(id, path, description, time_added, is_private, user_id) values (3, "media/png3.jpg", "Some description 3", '2018-05-05', false, 1);
+insert into media(id, path, description, time_added, is_private, user_id) values (4, "media/png4.jpg", "Some description 4", '2018-05-05', false, 1);
+insert into media(id, path, description, time_added, is_private, user_id) values (5, "media/png5.jpg", "Some description 5", '2018-05-05', false, 1);
+insert into media(id, path, description, time_added, is_private, user_id) values (6, "media/png6.jpg", "Some description 6", '2018-05-05', false, 1);

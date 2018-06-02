@@ -83,7 +83,7 @@ public class MediaServiceImpl implements MediaService {
 			throw new FileManipulationException(
 					"Error while fetching file " + media.getName() + ". Reason: " + e.getMessage());
 		}
-		
+	
 	}
 
 	@Override

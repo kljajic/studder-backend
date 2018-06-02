@@ -51,6 +51,7 @@ public class User implements Serializable {
 	//@NotNull
 	private Boolean isPrivate;
 	private Boolean isDeactivated;
+	private String profileImage;
 	
 	private String city;
 	
@@ -310,6 +311,14 @@ public class User implements Serializable {
 		this.city = city;
 	}
 
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+  }
+  
 	public String getNewPw() {
 		return newPw;
 	}
