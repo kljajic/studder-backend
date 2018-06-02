@@ -24,6 +24,7 @@ public class Media implements Serializable {
 	private String description;
 	private Date timeAdded;
 	private String path;
+	private Boolean isPrivate = false;
 	
 	@ManyToOne
 	private User user;
@@ -31,8 +32,7 @@ public class Media implements Serializable {
 	public Media() {
 	}
 	
-	public Media(String name, String contentType, Long size, String description, Date timeAdded, String path,
-			User user) {
+	public Media(String name, String contentType, Long size, String description, Date timeAdded, String path, User user) {
 		this.name = name;
 		this.contentType = contentType;
 		this.size = size;
@@ -104,6 +104,14 @@ public class Media implements Serializable {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public Boolean getIsPrivate() {
+		return isPrivate;
+	}
+
+	public void setIsPrivate(Boolean isPrivate) {
+		this.isPrivate = isPrivate;
 	}
 	
 }

@@ -2,26 +2,36 @@ package com.studder.controller;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.studder.dto.MediaDto;
 import com.studder.model.Media;
 import com.studder.model.User;
 import com.studder.service.MediaService;
@@ -42,12 +52,11 @@ public class MediaController {
 	
 	@GetMapping("/{userId}")
 	public List<Media> getMediaForUserId(@NotNull @Valid @PathVariable("userId") Long userId){
-		List<Media> media = mediaService.getMediasForUser(userId);
+		List<Media> media = mediaService.getMediasForUser();
 		for(Media singleMedia : media) {
 			BufferedImage originalImage;
 			Resource resource = new ClassPathResource(singleMedia.getPath());
 			try {
-				System.out.println(singleMedia.getPath());
 				originalImage = ImageIO.read(resource.getFile());
 				originalImage = resize(originalImage, 200, 200);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -58,7 +67,6 @@ public class MediaController {
 				String base64Encoded = DatatypeConverter.printBase64Binary(imageInByte);
 				singleMedia.setPath(base64Encoded);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -68,9 +76,8 @@ public class MediaController {
 	
 	@PostMapping("/setProfileImage")
 	public String setProfileImage(@RequestBody Media temp){
-		
-		User user = userService.getUser(temp.getUser().getId());
-		Media media = mediaService.getMedia(temp.getId());
+		User user = userService.getLoggedUser();
+		Media media = mediaService.getMediaById(temp.getId());
 		BufferedImage originalImage;
 		Resource resource = new ClassPathResource(media.getPath());
 		String ret = "-1";
@@ -87,7 +94,6 @@ public class MediaController {
 			ret = DatatypeConverter.printBase64Binary(imageInByte);
 			user.setProfileImage(ret);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -96,7 +102,7 @@ public class MediaController {
 	
 	@GetMapping("/bitmap/{mediaId}")
 	public byte[] getSingleMediaForUser(@NotNull @Valid @PathVariable("mediaId") Long mediaId){
-		Media singleMedia = mediaService.getMedia(mediaId);
+		Media singleMedia = mediaService.getMediaById(mediaId);
 		if(singleMedia != null) {
 			BufferedImage originalImage;
 			try {
@@ -111,7 +117,6 @@ public class MediaController {
 				baos.close();
 				return imageInByte;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				return null;
 			}
 			

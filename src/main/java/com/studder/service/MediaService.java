@@ -9,6 +9,8 @@ public interface MediaService {
 
 	void createMedia(String fileName, Long size, byte[] bytes, String description, String contentType);
 	
+	Media getMediaById(Long mediaId);
+	
 	MediaDto getMedia(Long mediaId);
 	
 	List<Media> getMediasForUser();

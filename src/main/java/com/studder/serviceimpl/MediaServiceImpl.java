@@ -110,4 +110,10 @@ public class MediaServiceImpl implements MediaService {
 		LOGGER.info("Media with id " + mediaId + "is successfully deleted");
 	}
 
+	@Override
+	public Media getMediaById(Long mediaId) {
+		LOGGER.info("Fetching media with id " + mediaId);
+		return mediaRepository.getOne(mediaId);
+	}
+
 }
