@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.studder.model.Swipe;
 import com.studder.service.SwipeService;
 
 @RestController
@@ -25,8 +26,8 @@ public class SwipeController {
 
 	@PostMapping("/{likedId}")
 	public void createSwipe(@PathVariable("likedId") @NotNull @Valid Long likedId,
-			@RequestBody @NotNull @Valid Boolean isLiked) {
-		swipeService.createSwipe(likedId, isLiked);
+			@RequestBody @NotNull @Valid Swipe swipe) {
+		swipeService.createSwipe(likedId, swipe.getIsLiked());
 	}
 
 }

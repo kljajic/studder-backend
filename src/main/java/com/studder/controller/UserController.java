@@ -1,5 +1,6 @@
 package com.studder.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -57,6 +58,20 @@ public class UserController {
 	@GetMapping("/getForSwipping")
 	public List<User> getUsersForSwiping() {
 		return userService.getUsersForSwiping();
+		/*ArrayList<User> users = new ArrayList<>();
+		User user = new User();
+		user.setUsername("Hehe");
+		user.setPassword("hehe");
+		user.setName("heh");
+		user.setCity("NS");
+		User user2 = new User();
+		user2.setUsername("Hehe2");
+		user2.setPassword("hehe2");
+		user2.setName("heh2");
+		user2.setCity("NS2");
+		users.add(user);
+		users.add(user2);
+		return users;*/
 	}
 
 }
