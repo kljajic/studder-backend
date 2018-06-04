@@ -53,6 +53,11 @@ public class MediaController {
 	
 	@GetMapping("/me")
 	public List<Media> getMediaForMe(){
+		
+		if(userService.getLoggedUser() == null) {
+			return null;
+		}
+		
 		User user = userService.getLoggedUser();
 		if(user != null) {
 			List<Media> media = mediaService.getMediasForUser();
@@ -79,10 +84,15 @@ public class MediaController {
 	}
 	
 	
-	@PostMapping("/setProfileImage")
-	public boolean setProfileImage(@RequestBody Media temp){
+	@PostMapping("/setProfileImage/{mediaId}")
+	public boolean setProfileImage(@PathVariable("mediaId") @NotNull @Valid Long mediaId){
+		
+		if(userService.getLoggedUser() == null) {
+			return false;
+		}
+		
 		User user = userService.getLoggedUser();
-		user.setProfileImage(temp.getId());
+		user.setProfileImage(mediaId);
 		return true;
 	}
 	
@@ -149,6 +159,11 @@ public class MediaController {
 	@PostMapping("/upload/{description}")
 	public Media createMedia(@PathVariable("description") @Valid @NotEmpty String description,
 			@RequestParam("file") MultipartFile file) throws IOException {
+		
+		if(userService.getLoggedUser() == null) {
+			return null;
+		}
+		
 		Media media = mediaService.createMedia(file.getOriginalFilename(), file.getSize(), file.getBytes(), file.getContentType(),
 				description);
 		BufferedImage originalImage;
@@ -185,8 +200,11 @@ public class MediaController {
 		return mediaService.getMediasForUser();
 	}
 	
-	@DeleteMapping("/{mediaId}")
+	@DeleteMapping("/delete/{mediaId}")
 	public void deleteMedia(@PathVariable("mediaId") @Valid @NonNull Long mediaId) {
+		if(userService.getLoggedUser() == null) {
+			return;
+		}
 		mediaService.deleteMedia(mediaId);
 	}
 	
