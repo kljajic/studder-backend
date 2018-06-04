@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -50,76 +51,89 @@ public class MediaController {
 		this.userService = userService;
 	}
 	
-	@GetMapping("/{userId}")
-	public List<Media> getMediaForUserId(@NotNull @Valid @PathVariable("userId") Long userId){
-		List<Media> media = mediaService.getMediasForUser();
-		for(Media singleMedia : media) {
+	@GetMapping("/me")
+	public List<Media> getMediaForMe(){
+		User user = userService.getLoggedUser();
+		if(user != null) {
+			List<Media> media = mediaService.getMediasForUser();
+				for(Media singleMedia : media) {
+					BufferedImage originalImage;
+					MediaDto mediaDto = mediaService.getMedia(singleMedia.getId());
+					try {
+						originalImage = ImageIO.read(new ByteArrayInputStream(mediaDto.getBytes()));
+						originalImage = resize(originalImage, 100, 100);
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						ImageIO.write( originalImage, "jpg", baos );
+						baos.flush();
+						byte[] imageInByte = baos.toByteArray();
+						baos.close();
+						String base64Encoded = DatatypeConverter.printBase64Binary(imageInByte);
+						singleMedia.setEncodedImage(base64Encoded);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			return media;
+			}
+		return null;
+	}
+	
+	
+	@PostMapping("/setProfileImage")
+	public boolean setProfileImage(@RequestBody Media temp){
+		User user = userService.getLoggedUser();
+		user.setProfileImage(temp.getId());
+		return true;
+	}
+	
+	@GetMapping("/getProfileImage")
+	public Media getProfileImage(){
+		User user = userService.getLoggedUser();
+		Media media = new Media();
+		if(user != null) {
 			BufferedImage originalImage;
-			Resource resource = new ClassPathResource(singleMedia.getPath());
+			MediaDto mediaDto = mediaService.getMedia(user.getProfileImage());
 			try {
-				originalImage = ImageIO.read(resource.getFile());
-				originalImage = resize(originalImage, 200, 200);
+				originalImage = ImageIO.read(new ByteArrayInputStream(mediaDto.getBytes()));
+				originalImage = resize(originalImage, 100, 100);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write( originalImage, "jpg", baos );
 				baos.flush();
 				byte[] imageInByte = baos.toByteArray();
 				baos.close();
 				String base64Encoded = DatatypeConverter.printBase64Binary(imageInByte);
-				singleMedia.setPath(base64Encoded);
-			} catch (IOException e) {
+				media.setEncodedImage(base64Encoded);
+				return media;
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
-		return media;
+		return null;
 	}
 	
-	@PostMapping("/setProfileImage")
-	public String setProfileImage(@RequestBody Media temp){
-		User user = userService.getLoggedUser();
-		Media media = mediaService.getMediaById(temp.getId());
-		BufferedImage originalImage;
-		Resource resource = new ClassPathResource(media.getPath());
-		String ret = "-1";
-		
-		try {
-			System.out.println(media.getPath());
-			originalImage = ImageIO.read(resource.getFile());
-			originalImage = resize(originalImage, 200, 200);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write( originalImage, "jpg", baos );
-			baos.flush();
-			byte[] imageInByte = baos.toByteArray();
-			baos.close();
-			ret = DatatypeConverter.printBase64Binary(imageInByte);
-			user.setProfileImage(ret);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-	}
 	
 	@GetMapping("/bitmap/{mediaId}")
 	public byte[] getSingleMediaForUser(@NotNull @Valid @PathVariable("mediaId") Long mediaId){
-		Media singleMedia = mediaService.getMediaById(mediaId);
-		if(singleMedia != null) {
-			BufferedImage originalImage;
-			try {
-				Resource resource = new ClassPathResource(singleMedia.getPath());
-				System.out.println(resource.getFile().exists());
-				originalImage = ImageIO.read(resource.getFile());
-				originalImage = resize(originalImage, 0, 0);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write( originalImage, "jpg", baos );
-				baos.flush();
-				byte[] imageInByte = baos.toByteArray();
-				baos.close();
-				return imageInByte;
-			} catch (IOException e) {
-				return null;
+		if(userService.getLoggedUser() != null) {
+			Media singleMedia = mediaService.getMediaById(mediaId);
+			if(singleMedia != null) {
+				BufferedImage originalImage;
+				try {
+					Resource resource = new ClassPathResource(singleMedia.getPath());
+					System.out.println(resource.getFile().exists());
+					originalImage = ImageIO.read(resource.getFile());
+					originalImage = resize(originalImage, 0, 0);
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					ImageIO.write( originalImage, "jpg", baos );
+					baos.flush();
+					byte[] imageInByte = baos.toByteArray();
+					baos.close();
+					return imageInByte;
+				} catch (IOException e) {
+					return null;
+				}
 			}
-			
+			return null;
 		}
 		return null;
 	}
@@ -132,11 +146,22 @@ public class MediaController {
 		return img;
   }
 	
-	@PostMapping("/{description:.+}")
-	public void createMedia(@PathVariable("description") @Valid @NotEmpty String description,
+	@PostMapping("/upload/{description}")
+	public Media createMedia(@PathVariable("description") @Valid @NotEmpty String description,
 			@RequestParam("file") MultipartFile file) throws IOException {
-		mediaService.createMedia(file.getOriginalFilename(), file.getSize(), file.getBytes(), file.getContentType(),
+		Media media = mediaService.createMedia(file.getOriginalFilename(), file.getSize(), file.getBytes(), file.getContentType(),
 				description);
+		BufferedImage originalImage;
+		originalImage = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+		originalImage = resize(originalImage, 100, 100);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write( originalImage, "jpg", baos );
+		baos.flush();
+		byte[] imageInByte = baos.toByteArray();
+		baos.close();
+		String base64Encoded = DatatypeConverter.printBase64Binary(imageInByte);
+		media.setEncodedImage(base64Encoded);
+		return media;
 	}
 	
 	@GetMapping("/{mediaId}")
