@@ -2,6 +2,7 @@ package com.studder.service;
 
 import java.util.List;
 
+import com.studder.model.User;
 import com.studder.model.UserMatch;
 
 public interface MatchService {
@@ -15,5 +16,7 @@ public interface MatchService {
 	void deleteMathc(Long mathcId);
 	
 	List<UserMatch> getMatches(Long userId);
+	
+	void notifyMatched(UserMatch match);
 	
 }

@@ -20,6 +20,16 @@ insert into user(id, birthday, description, is_deactivated, is_private, last_onl
 insert into user(id, birthday, description, is_deactivated, is_private, last_online, latitude, longitude, name, online_status, password, profile_created, radius, share_location, surname, swipe_throw, user_gender, username, city, profile_image)
 	values(7, '1994-05-05', 'Description for user 7', true, false, '2018-05-22', 45.267136, 19.833549, 'Deaktiviran', true, '$2a$10$kM4FdWCmb.BSyXJdqOBAhuQB1F25QEKWdfbS7ViS6LkSpNF.Th0M2', '2018-05-22', 13.0, true, 'Profil', 'MALE', 'MALE', 'deaktivan', 'Novi Sad', 6);
 	
+
+insert into user_device(id, device_token, is_signed, user_id) values (1, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 1);
+insert into user_device(id, device_token, is_signed, user_id) values (2, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 2);
+insert into user_device(id, device_token, is_signed, user_id) values (3, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 3);
+insert into user_device(id, device_token, is_signed, user_id) values (4, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 4);
+insert into user_device(id, device_token, is_signed, user_id) values (5, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 5);
+insert into user_device(id, device_token, is_signed, user_id) values (6, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 6);
+insert into user_device(id, device_token, is_signed, user_id) values (7, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 7);	
+	
+	
 --INSERT USER SWIPES INTO DB
 insert into swipe(id, is_liked, time_swiped, liked_id, liker_id) values (1, true, '2018-05-22', 2, 1);
 
