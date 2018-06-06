@@ -14,4 +14,5 @@ public interface MatchRepository extends JpaRepository<UserMatch, Long> {
 	@Query("select match from UserMatch match where match.participant1.id = ?1 or match.participant2.id = ?1")
 	List<UserMatch> getMatchesByParticipant1IdOrParticipant2Id(Long participantId);
 	
+	
 }

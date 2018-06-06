@@ -2,6 +2,9 @@ package com.studder.serviceimpl;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +72,11 @@ public class MatchServiceImpl implements MatchService {
 		List<UserMatch> userMatches =  matchRepository.getMatchesByParticipant1IdOrParticipant2Id(userId);
 		LOGGER.info("Matches related with user id " + userId + " successfully retrieved");
 		return userMatches;
+	}
+
+	@Override
+	public UserMatch getMatch(@NotNull @Valid Long matchId) {
+		return matchRepository.getOne(matchId);
 	}
 
 }
