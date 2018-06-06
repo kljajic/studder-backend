@@ -1,5 +1,6 @@
 package com.studder.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.studder.dto.MediaDto;
@@ -13,7 +14,9 @@ public interface MediaService {
 	
 	MediaDto getMedia(Long mediaId);
 	
-	List<Media> getMediasForUser();
+	byte[] getMediaBytes(Long mediaId) throws IOException;
+	
+	List<Media> getMediasForUser(Long userId);
 	
 	void deleteMedia(Long mediaId);
 	

@@ -49,6 +49,11 @@ public class MatchController {
 		return matchService.getMathces();
 	}
 	
+	@GetMapping("/{matchId}")
+	public UserMatch getMatch(@PathVariable("matchId") @NotNull @Valid Long matchId) {
+		return matchService.getMatch(matchId);
+	}
+	
 	@DeleteMapping("/{matchId}")
 	public void deleteMatch(@PathVariable("matchId") @NotNull @Valid Long matchId) {
 		matchService.deleteMathc(matchId);

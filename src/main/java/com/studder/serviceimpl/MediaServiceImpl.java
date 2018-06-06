@@ -43,7 +43,7 @@ public class MediaServiceImpl implements MediaService {
 		User user = userService.getLoggedUser();
 		LOGGER.info("Saving media for user with username " + user.getUsername());
 		
-		int numberOfMedia = getMediasForUser().size();
+		int numberOfMedia = getMediasForUser(user.getId()).size();
 		
 		String mediaName = filename.split("\\.")[0] + "_" + numberOfMedia + "." + filename.split("\\.")[1];
 		Media media = new Media(mediaName, contentType, size, description, new Date(), user.getUsername(), user);
@@ -90,6 +90,15 @@ public class MediaServiceImpl implements MediaService {
 	@Override
 	public List<Media> getMediasForUser() {
 		User user = userService.getLoggedUser();
+    LOGGER.info("Fetching media for user with username " + user.getUsername());
+		List<Media> userMedias = mediaRepository.getMediaByUserId(user.getId());
+		LOGGER.info("User medias are successfully fetched");
+		return userMedias;
+  }
+	
+  @Override
+  public List<Media> getMediasForUser(Long userId) {
+		User user = userService.getUser(userId);
 		LOGGER.info("Fetching media for user with username " + user.getUsername());
 		List<Media> userMedias = mediaRepository.getMediaByUserId(user.getId());
 		LOGGER.info("User medias are successfully fetched");
@@ -115,6 +124,12 @@ public class MediaServiceImpl implements MediaService {
 	public Media getMediaById(Long mediaId) {
 		LOGGER.info("Fetching media with id " + mediaId);
 		return mediaRepository.getOne(mediaId);
+	}
+
+	@Override
+	public byte[] getMediaBytes(Long mediaId) throws IOException {
+		Media media = this.getMediaById(mediaId);
+		return fileService.readFile(media.getPath(), media.getName());
 	}
 
 }

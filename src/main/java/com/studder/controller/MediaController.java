@@ -2,7 +2,6 @@ package com.studder.controller;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +15,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.studder.dto.MediaDto;
 import com.studder.model.Media;
 import com.studder.model.User;
 import com.studder.service.MediaService;
@@ -50,14 +44,35 @@ public class MediaController {
 		this.mediaService = mediaService;
 		this.userService = userService;
 	}
-	
-	@GetMapping("/me")
-	public List<Media> getMediaForMe(){
-		
-		if(userService.getLoggedUser() == null) {
-			return null;
+
+	@GetMapping("/{userId}")
+	public List<Media> getMediaForUserId(@PathVariable("userId") Long userId){
+		List<Media> media = mediaService.getMediasForUser(userId);
+		for(Media singleMedia : media) {
+					BufferedImage originalImage;
+					MediaDto mediaDto = mediaService.getMedia(singleMedia.getId());
+					try {
+						originalImage = ImageIO.read(new ByteArrayInputStream(mediaDto.getBytes()));
+						originalImage = resize(originalImage, 100, 100);
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						ImageIO.write( originalImage, "jpg", baos );
+						baos.flush();
+						byte[] imageInByte = baos.toByteArray();
+						baos.close();
+						String base64Encoded = DatatypeConverter.printBase64Binary(imageInByte);
+						singleMedia.setEncodedImage(base64Encoded);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			return media;
 		}
-		
+	
+  @GetMapping("/me")
+	public List<Media> getMediaForMe(){		
+    if(userService.getLoggedUser() == null) {
+			return null;
+    }
 		User user = userService.getLoggedUser();
 		if(user != null) {
 			List<Media> media = mediaService.getMediasForUser();
@@ -179,25 +194,9 @@ public class MediaController {
 		return media;
 	}
 	
-	@GetMapping("/{mediaId}")
-	public ResponseEntity<?> getMedia(@PathVariable("mediaId") @Valid @NonNull Long mediaId) {
-		MediaDto media = mediaService.getMedia(mediaId);
-		
-		InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(media.getBytes()));
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", String.format("attachment: filename=\"%s\"", media.getFilename()));
-		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-		headers.add("Pragma", "no-cache");
-		headers.add("Expires", "0");
-		
-		return ResponseEntity.ok().headers(headers).contentLength(media.getSize())
-				.contentType(MediaType.parseMediaType(media.getContentType())).body(resource);
-	}
-	
-	@GetMapping
-	public List<Media> getMediaForUser() {
-		return mediaService.getMediasForUser();
+	@GetMapping("/image/{mediaId}")
+	public String getMedia(@PathVariable("mediaId") @Valid Long mediaId) throws IOException {
+		return new String(mediaService.getMediaBytes(mediaId));
 	}
 	
 	@DeleteMapping("/delete/{mediaId}")

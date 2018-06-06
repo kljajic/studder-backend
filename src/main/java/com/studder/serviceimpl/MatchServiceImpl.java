@@ -3,6 +3,8 @@ package com.studder.serviceimpl;
 import java.util.List;
 
 import javax.validation.constraints.Null;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,7 +134,10 @@ public class MatchServiceImpl implements MatchService {
 		
 		LOGGER.info("Firebase notified users -> " + match.getParticipant1().getId() + " and " + match.getParticipant2().getId());
 		return;
-		
+  }
+
+	public UserMatch getMatch(@NotNull @Valid Long matchId) {
+		return matchRepository.getOne(matchId);
 	}
 
 }
