@@ -8,7 +8,7 @@ import com.studder.model.Media;
 
 public interface MediaService {
 
-	void createMedia(String fileName, Long size, byte[] bytes, String description, String contentType);
+	Media createMedia(String fileName, Long size, byte[] bytes, String description, String contentType);
 	
 	Media getMediaById(Long mediaId);
 	

@@ -39,7 +39,7 @@ public class MediaServiceImpl implements MediaService {
 	}
 	
 	@Override
-	public void createMedia(String filename, Long size, byte[] bytes, String contentType, String description) {
+	public Media createMedia(String filename, Long size, byte[] bytes, String contentType, String description) {
 		User user = userService.getLoggedUser();
 		LOGGER.info("Saving media for user with username " + user.getUsername());
 		
@@ -52,6 +52,7 @@ public class MediaServiceImpl implements MediaService {
 			fileService.saveFile(user.getUsername(), mediaName, bytes);
 			mediaRepository.save(media);
 			LOGGER.info("Media " + filename + " is successfully saved");
+			return media;
 		} catch (IOException e) {
 			e.printStackTrace();
 			LOGGER.error("Media " + filename + " not saved to database " + e.getMessage());
@@ -77,7 +78,7 @@ public class MediaServiceImpl implements MediaService {
 		try {
 			byte[] mediaBytes = fileService.readFile(media.getPath(), media.getName());
 			LOGGER.info("Media with id " + mediaId + " is successfully fetched");
-			return new MediaDto(media.getName(), media.getContentType(), media.getSize(), mediaBytes);
+			return new MediaDto(media.getName(), media.getContentType(), mediaBytes.length, mediaBytes);
 		} catch (IOException e) {
 			LOGGER.error("Error while fetching file " + media.getName() + ". Reason: " + e.getMessage());
 			throw new FileManipulationException(
@@ -87,7 +88,16 @@ public class MediaServiceImpl implements MediaService {
 	}
 
 	@Override
-	public List<Media> getMediasForUser(Long userId) {
+	public List<Media> getMediasForUser() {
+		User user = userService.getLoggedUser();
+    LOGGER.info("Fetching media for user with username " + user.getUsername());
+		List<Media> userMedias = mediaRepository.getMediaByUserId(user.getId());
+		LOGGER.info("User medias are successfully fetched");
+		return userMedias;
+  }
+	
+  @Override
+  public List<Media> getMediasForUser(Long userId) {
 		User user = userService.getUser(userId);
 		LOGGER.info("Fetching media for user with username " + user.getUsername());
 		List<Media> userMedias = mediaRepository.getMediaByUserId(user.getId());

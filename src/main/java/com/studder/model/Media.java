@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Media implements Serializable {
@@ -25,6 +26,9 @@ public class Media implements Serializable {
 	private Date timeAdded;
 	private String path;
 	private Boolean isPrivate = false;
+	
+	@Transient
+	private String encodedImage;
 	
 	@ManyToOne
 	private User user;
@@ -112,6 +116,14 @@ public class Media implements Serializable {
 
 	public void setIsPrivate(Boolean isPrivate) {
 		this.isPrivate = isPrivate;
+	}
+
+	public String getEncodedImage() {
+		return encodedImage;
+	}
+
+	public void setEncodedImage(String encodedImage) {
+		this.encodedImage = encodedImage;
 	}
 	
 }

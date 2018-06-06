@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,7 +51,7 @@ public class User implements Serializable {
 	//@NotNull
 	private Boolean isPrivate;
 	private Boolean isDeactivated;
-	private String profileImage;
+	private Long profileImage;
 	
 	private String city;
 	
@@ -63,6 +64,13 @@ public class User implements Serializable {
 	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private Gender swipeThrow;
+	
+	@Transient
+	private String profileImageEncoded;
+	
+	@Transient
+	private String userDeviceToken;
+	
 	
 	@OneToMany(mappedBy="item", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemPreferences> preferences;
@@ -84,6 +92,9 @@ public class User implements Serializable {
 	
 	@OneToMany(mappedBy="sender", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Message> messages;
+	
+	@OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<UserDevice> userDevices;
 	
 	public User() {
 	}
@@ -309,21 +320,47 @@ public class User implements Serializable {
 	public void setCity(String city) {
 		this.city = city;
 	}
-
-	public String getProfileImage() {
+  
+	public Long getProfileImage() {
 		return profileImage;
 	}
 
-	public void setProfileImage(String profileImage) {
+	public void setProfileImage(Long profileImage) {
 		this.profileImage = profileImage;
-  }
-  
+	}
+
 	public String getNewPw() {
 		return newPw;
 	}
 
 	public void setNewPw(String newPw) {
 		this.newPw = newPw;
+	}
+
+	public String getProfileImageEncoded() {
+		return profileImageEncoded;
+	}
+
+	public void setProfileImageEncoded(String profileImageEncoded) {
+		this.profileImageEncoded = profileImageEncoded;
+	}
+	
+	@JsonIgnore
+	public List<UserDevice> getUserDevices() {
+		return userDevices;
+	}
+	
+	@JsonProperty
+	public void setUserDevices(List<UserDevice> userDevices) {
+		this.userDevices = userDevices;
+	}
+
+	public String getUserDeviceToken() {
+		return userDeviceToken;
+	}
+
+	public void setUserDeviceToken(String userDeviceToken) {
+		this.userDeviceToken = userDeviceToken;
 	}
 	
 }

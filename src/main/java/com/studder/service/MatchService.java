@@ -2,6 +2,7 @@ package com.studder.service;
 
 import java.util.List;
 
+import com.studder.model.User;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -20,5 +21,7 @@ public interface MatchService {
 	List<UserMatch> getMatches(Long userId);
 
 	UserMatch getMatch(@NotNull @Valid Long matchId);
+	
+	void notifyMatched(UserMatch match);
 	
 }
