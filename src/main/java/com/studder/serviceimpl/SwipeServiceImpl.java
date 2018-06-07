@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.studder.model.UserMatch;
 import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.Swipe;
 import com.studder.model.User;
+import com.studder.model.UserMatch;
 import com.studder.repository.SwipeRepository;
 import com.studder.service.MatchService;
 import com.studder.service.SwipeService;

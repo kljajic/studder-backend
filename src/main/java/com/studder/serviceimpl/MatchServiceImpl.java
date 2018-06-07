@@ -2,9 +2,9 @@ package com.studder.serviceimpl;
 
 import java.util.List;
 
-import javax.validation.constraints.Null;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

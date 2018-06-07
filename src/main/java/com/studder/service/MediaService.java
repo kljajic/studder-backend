@@ -16,6 +16,8 @@ public interface MediaService {
 	
 	byte[] getMediaBytes(Long mediaId) throws IOException;
 	
+	List<Media> getMediasForUser();
+	
 	List<Media> getMediasForUser(Long userId);
 	
 	void deleteMedia(Long mediaId);

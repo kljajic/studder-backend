@@ -2,7 +2,6 @@ package com.studder.service;
 
 import java.util.List;
 
-import com.studder.model.User;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
