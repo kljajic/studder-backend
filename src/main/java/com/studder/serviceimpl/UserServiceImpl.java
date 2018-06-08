@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.User;
 import com.studder.repository.UserRepository;
-import com.studder.service.MediaService;
 import com.studder.service.UserService;
 
 @Service
@@ -28,14 +27,12 @@ public class UserServiceImpl implements UserService {
 	private static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	private final UserRepository userRepository;
-	private final MediaService mediaService;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MediaService mediaService) {
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
-		this.mediaService = mediaService;
 	}
 
 	@Override
@@ -141,10 +138,6 @@ public class UserServiceImpl implements UserService {
 				.filter(userForSwipe -> calculateDestanceBetweenUsers(user.getId(), userForSwipe.getId()) < user
 						.getRadius())
 				.collect(Collectors.toList());
-		
-		usersForSwipping.stream().forEach(u ->{
-			u.setProfileImageEncoded(mediaService.convertImageToString(user.getProfileImage(), -1, -1));
-		});
 		
 		LOGGER.info("Users are successfully fetched");
 		return usersForSwipping;

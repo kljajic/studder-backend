@@ -168,7 +168,6 @@ public class MediaServiceImpl implements MediaService {
 		if(newW == -1 || newH == -1) {
 			return img;
 		}
-		
 		BufferedImage newImage = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_RGB);
 		Graphics g = newImage.createGraphics();
 		g.drawImage(img, 0, 0, newW, newH, null);
