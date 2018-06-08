@@ -22,4 +22,6 @@ public interface MediaService {
 	
 	void deleteMedia(Long mediaId);
 	
+	String convertImageToString(Long profileImageId, int width, int height);
+	
 }
