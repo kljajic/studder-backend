@@ -22,8 +22,6 @@ import com.studder.model.UserMatch;
 import com.studder.service.MediaService;
 import com.studder.service.NotificationService;
 import com.studder.service.UserDeviceService;
-
-
 @Service
 public class NotificationServiceImpl implements NotificationService{
 	
@@ -35,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService{
 	public static final String NOTIFICATION_MESSAGE = "message";
 	
 	
-	@Value("${firebase.notification}")
+	@Value("${firebase.urlsomething}")
 	public String url;
 	
 	private final UserDeviceService userDeviceService;
@@ -78,15 +76,19 @@ public class NotificationServiceImpl implements NotificationService{
 				JSONObject body = new JSONObject();
 				JSONObject message = new JSONObject();
 				
+				JSONObject notification = new JSONObject();
+				notification.put("title", "New message");
+				notification.put("body", "Message body");
+				
 				JSONObject data = new JSONObject();
 				data.put("userId", receiver.getId());
 				data.put("matchId", mess.getMatch().getId());
-				data.put("image", mediaService.convertImageToString(mess.getSender().getProfileImage(), 100, 1000));
+				//data.put("image", mediaService.convertImageToString(mess.getSender().getProfileImage(), 100, 1000));
 				data.put("message", mess.getText());
-				data.put("datetime", mess.getTimeRecieved());
 				
 				message.put("token", dev.getDeviceToken());
 				message.put("data", data);
+				message.put("notification", notification);
 				body.put("message", message);
 				
 				HttpEntity<String> req = new HttpEntity<>(body.toString(), headers);
@@ -99,8 +101,10 @@ public class NotificationServiceImpl implements NotificationService{
 				
 			} catch (HttpClientErrorException e) {
 				LOGGER.info("HttpClientError exception for message match id " + mess.getMatch().getId() + " and message id "+ mess.getId());
+				e.printStackTrace();
 			} catch (JSONException e) {
 				LOGGER.info("JSON creating exception for message match id " + mess.getMatch().getId() + " and message id "+ mess.getId());
+				e.printStackTrace();
 			} 
 			
 			LOGGER.info("Message notifications sent " + mess.getMatch().getId() + " and message id "+ mess.getId());

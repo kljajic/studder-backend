@@ -9,7 +9,7 @@ import com.studder.model.UserMatch;
 
 public interface MatchService {
 
-	void createMatch(UserMatch match);
+	UserMatch createMatch(UserMatch match);
 	
 	UserMatch getMathc(Long matchId);
 	

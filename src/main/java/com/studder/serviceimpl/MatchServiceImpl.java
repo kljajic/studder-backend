@@ -16,7 +16,6 @@ import com.studder.model.User;
 import com.studder.model.UserMatch;
 import com.studder.repository.MatchRepository;
 import com.studder.service.MatchService;
-import com.studder.service.NotificationService;
 import com.studder.service.UserService;
 
 @Service
@@ -33,22 +32,20 @@ public class MatchServiceImpl implements MatchService {
 	
 	private final MatchRepository matchRepository;
 	private final UserService userService;
-	private final NotificationService notificationService;
 	
 	@Autowired
-	public MatchServiceImpl(MatchRepository matchRepository, UserService userService, NotificationService notificationService) {
+	public MatchServiceImpl(MatchRepository matchRepository, UserService userService) {
 		this.matchRepository = matchRepository;
 		this.userService = userService;
-		this.notificationService = notificationService;
 	}
 	
 	@Override
-	public void createMatch(UserMatch match) {
+	public UserMatch createMatch(UserMatch match) {
 		LOGGER.info("Creating new mathc for users: " + match.getParticipant1().getUsername() + " and "
 				+ match.getParticipant2().getUsername());
 		match = matchRepository.save(match);
-		notificationService.notifyMatch(match);
 		LOGGER.info("Match is successfully created");
+		return match;
 	}
 
 	@Override

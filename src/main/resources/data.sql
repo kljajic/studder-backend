@@ -28,6 +28,15 @@ insert into user_device(id, device_token, is_signed, user_id) values (4, "fwMj88
 insert into user_device(id, device_token, is_signed, user_id) values (5, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 5);
 insert into user_device(id, device_token, is_signed, user_id) values (6, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 6);
 insert into user_device(id, device_token, is_signed, user_id) values (7, "fwMj88yf6Vc:APA91bHAeSNd81-IGeHGEOMctiAUAnL7LSVcg-0wci3yS0M4kqL4VurutZFuddegvpfSGo6op_Wskyu5kl6yLi76IkekXWTfTTcQR4dn-T9lgqeSTFxJRZ3ye-V7jFnEDzfpAJYtDaFk", true, 7);	
+
+insert into user_device(id, device_token, is_signed, user_id) values (8, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 1);
+insert into user_device(id, device_token, is_signed, user_id) values (9, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 2);
+insert into user_device(id, device_token, is_signed, user_id) values (10, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 3);
+insert into user_device(id, device_token, is_signed, user_id) values (11, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 4);
+insert into user_device(id, device_token, is_signed, user_id) values (12, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 5);
+insert into user_device(id, device_token, is_signed, user_id) values (13, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 6);
+insert into user_device(id, device_token, is_signed, user_id) values (14, "cHYUH1SP7F4:APA91bGC5_BQYsudLFzQfFm0lEDN9A4V8dGRVJt9eJ186qhM24nxvTvj3jrjhTiH_j1uHf5XB1_7XGPCRAP97nyfd22LwujQB1xtuqzRKOghQdR0UUMAnXNVOjhxHbtuIZ9R3GWofN0O", true, 7);
+
 	
 	
 --INSERT USER SWIPES INTO DB
