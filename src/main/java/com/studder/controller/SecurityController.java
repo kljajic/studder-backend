@@ -1,9 +1,7 @@
 package com.studder.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.notification.Message;
-import com.notification.Notification;
 import com.notification.OAuth2Google;
 import com.studder.model.User;
 import com.studder.model.UserDevice;
@@ -57,12 +53,6 @@ public class SecurityController {
 		userDeviceService.login(u, user.getUserDeviceToken());
 		
 		User a = userService.findUserByUsername("username1");
-		
-		
-		Notification matchNotification = new Notification();
-		matchNotification.setTitle("New match with " + a.getName());
-		matchNotification.setMessage("You have been matched, start your conversation with the matched person");
-		
 		List<UserDevice> devicesParticipant2 = userDeviceService.getUserDeviceByUserId(a.getId());
 		
 		devicesParticipant2.stream().forEach(dev -> {
@@ -76,13 +66,6 @@ public class SecurityController {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			HttpEntity<Message> request = new HttpEntity<>(new Message(), headers);
-			Message mes = new Message();;
-			mes.setNotification(matchNotification);
-			mes.setToken(dev.getDeviceToken());
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("id", a.getId().toString());
-			mes.setData(map);
 			
 			
 			try {

@@ -17,6 +17,7 @@ import com.studder.model.UserMatch;
 import com.studder.repository.MessageRepository;
 import com.studder.service.MatchService;
 import com.studder.service.MessageService;
+import com.studder.service.NotificationService;
 import com.studder.service.UserService;
 
 @Service
@@ -28,14 +29,17 @@ public class MessageServiceImpl implements MessageService {
 	private final MessageRepository messageRepository;
 	private final MatchService matchService;
 	private final UserService userService;
+	private final NotificationService notificationService;
 	
 	@Autowired
 	public MessageServiceImpl(MessageRepository messageRepository, 
 							  MatchService matchService,
-							  UserService userService) {
+							  UserService userService,
+							  NotificationService notificationService) {
 		this.messageRepository = messageRepository;
 		this.matchService = matchService;
 		this.userService = userService;
+		this.notificationService = notificationService;
 	}
 	
 	@Override
@@ -48,7 +52,7 @@ public class MessageServiceImpl implements MessageService {
 		message.setStatus(MessageStatus.DELIVERED);
 		message.setTimeRecieved(new Date());
 		message.setSender(sender);
-		messageRepository.save(message);
+		message = messageRepository.save(message);
 		
 		LOGGER.info("Match for message updating -> lastMessage, lastMessageSeen for matchId " + matchId);
 		match.setLastMessage(message.getText());
@@ -56,6 +60,12 @@ public class MessageServiceImpl implements MessageService {
 		match.setLastMessageDate(message.getTimeRecieved());;
 		matchService.createMatch(match);
 		LOGGER.info("Match for message updated -> lastMessage, lastMessageSeen for matchId " + matchId);
+		
+		LOGGER.info("Match for message updated -> notifying the user for match id" + matchId);
+		
+		notificationService.notifyMessage(message);	
+		LOGGER.info("Match for message updated -> successful notifying the user for match id" + matchId);
+		
 		
 		LOGGER.info("Message for " + matchId + " is successfully created");
 	}

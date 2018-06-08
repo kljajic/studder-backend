@@ -21,6 +21,4 @@ public interface MatchService {
 
 	UserMatch getMatch(@NotNull @Valid Long matchId);
 	
-	void notifyMatched(UserMatch match);
-	
 }
