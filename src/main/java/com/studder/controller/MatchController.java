@@ -1,11 +1,8 @@
 package com.studder.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.studder.dto.MediaDto;
-import com.studder.model.Media;
 import com.studder.model.User;
 import com.studder.model.UserMatch;
 import com.studder.service.MatchService;
@@ -105,4 +101,10 @@ public class MatchController {
 		}
 		return null;
 	}
+	
+	@GetMapping("/count/{userId}")
+	public Integer getMathcCountForUser(@PathVariable("userId") @Valid @NotNull Long userId) {
+		return matchService.getMatchesCountForUser(userId);
+	}
+	
 }

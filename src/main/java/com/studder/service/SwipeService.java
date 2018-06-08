@@ -8,4 +8,6 @@ public interface SwipeService {
 	
 	Swipe getExistingSwipeForUsers(Long participant1, Long participant2);
 	
+	Integer getSwipesCountForUser(Long likerId);
+	
 }

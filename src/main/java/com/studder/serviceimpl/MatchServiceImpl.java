@@ -140,4 +140,12 @@ public class MatchServiceImpl implements MatchService {
 		return matchRepository.getOne(matchId);
 	}
 
+	@Override
+	public Integer getMatchesCountForUser(Long userId) {
+		LOGGER.info("Fetching matches count for user with id: " + userId);
+		Integer mathcesCount = matchRepository.getMathesCountForUser(userId);
+		LOGGER.info("Matches count is successfully fetched");
+		return mathcesCount;
+	}
+
 }

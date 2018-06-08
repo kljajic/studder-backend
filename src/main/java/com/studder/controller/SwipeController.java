@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,5 +30,10 @@ public class SwipeController {
 			@RequestBody @NotNull @Valid Swipe swipe) {
 		swipeService.createSwipe(likedId, swipe.getIsLiked());
 	}
-
+	
+	@GetMapping("/count/{likerId}")
+	public Integer getSwipeCountForUser(@PathVariable("likerId") @NotNull @Valid Long likerId) {
+		return swipeService.getSwipesCountForUser(likerId);
+	}
+	
 }
