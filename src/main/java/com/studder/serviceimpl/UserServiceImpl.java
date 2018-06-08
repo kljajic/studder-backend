@@ -73,6 +73,8 @@ public class UserServiceImpl implements UserService {
 		//existingUser.setBirthday(user.getBirthday());
 		if(user.getDescription() != null)
 			existingUser.setDescription(user.getDescription());
+		if(user.getCity() != null)
+			existingUser.setCity(user.getCity());
 		if(user.getIsPrivate() != null)
 			existingUser.setIsPrivate(user.getIsPrivate());
 		if(user.getName() != null)
