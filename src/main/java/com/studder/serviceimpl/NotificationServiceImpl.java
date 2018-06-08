@@ -81,8 +81,8 @@ public class NotificationServiceImpl implements NotificationService{
 				notification.put("body", "Message body");
 				
 				JSONObject data = new JSONObject();
-				data.put("userId", receiver.getId());
-				data.put("matchId", mess.getMatch().getId());
+				data.put("userId", Long.toString(receiver.getId()));
+				data.put("matchId", Long.toString(mess.getMatch().getId()));
 				//data.put("image", mediaService.convertImageToString(mess.getSender().getProfileImage(), 100, 1000));
 				data.put("message", mess.getText());
 				
@@ -140,7 +140,7 @@ public class NotificationServiceImpl implements NotificationService{
 				JSONObject data = new JSONObject();
 				data.put("userId", match.getParticipant2().getId());
 				data.put("matchId", match.getId());
-				data.put("image", mediaService.convertImageToString(match.getParticipant2().getProfileImage(), 100, 1000));
+				data.put("image", mediaService.convertImageToString(match.getParticipant2().getProfileImage(), 100, 100));
 				
 				message.put("token", dev.getDeviceToken());
 				message.put("data", data);
