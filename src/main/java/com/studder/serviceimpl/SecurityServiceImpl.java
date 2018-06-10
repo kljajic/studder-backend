@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.studder.exception.AuthenticationException;
 import com.studder.model.User;
+import com.studder.repository.UserRepository;
 import com.studder.service.SecurityService;
 import com.studder.service.UserService;
 
@@ -27,12 +28,14 @@ public class SecurityServiceImpl implements SecurityService {
 	
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public SecurityServiceImpl(AuthenticationManager authenticationManager,
-			UserService userService) throws Exception {
+			UserService userService, UserRepository userRepository) throws Exception {
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -51,6 +54,12 @@ public class SecurityServiceImpl implements SecurityService {
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 				setOnlineStatus();
 				User returnUser = userService.findUserByUsername(user.getUsername());
+				
+				if(returnUser.getFirstTimeLogin()) {
+					returnUser.setFirstTimeLogin(false);
+					returnUser = userRepository.save(returnUser);
+				}
+				
 				return returnUser;
 			}
 		}catch (Exception e) {

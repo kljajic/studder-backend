@@ -19,7 +19,6 @@ import com.studder.model.Message;
 import com.studder.model.User;
 import com.studder.model.UserDevice;
 import com.studder.model.UserMatch;
-import com.studder.service.MediaService;
 import com.studder.service.NotificationService;
 import com.studder.service.UserDeviceService;
 @Service
@@ -37,13 +36,11 @@ public class NotificationServiceImpl implements NotificationService{
 	public String url;
 	
 	private final UserDeviceService userDeviceService;
-	private final MediaService mediaService;
 	private final RestTemplate restTemplate;
 	
-	public NotificationServiceImpl(UserDeviceService userDeviceService, RestTemplate restTemplate, MediaService mediaService) {
+	public NotificationServiceImpl(UserDeviceService userDeviceService, RestTemplate restTemplate) {
 		this.userDeviceService = userDeviceService;
 		this.restTemplate = restTemplate;
-		this.mediaService = mediaService;
 	}
 	
 	@Override
@@ -77,12 +74,14 @@ public class NotificationServiceImpl implements NotificationService{
 				JSONObject message = new JSONObject();
 				
 				JSONObject notification = new JSONObject();
-				notification.put("title", "New message");
-				notification.put("body", "Message body");
+				
+				notification.put("title", mess.getSender().getName());
+				notification.put("body", mess.getText());
 				
 				JSONObject data = new JSONObject();
 				data.put("userId", Long.toString(receiver.getId()));
 				data.put("matchId", Long.toString(mess.getMatch().getId()));
+				data.put("type", "message");
 				//data.put("image", mediaService.convertImageToString(mess.getSender().getProfileImage(), 100, 1000));
 				data.put("message", mess.getText());
 				
@@ -137,13 +136,20 @@ public class NotificationServiceImpl implements NotificationService{
 				JSONObject body = new JSONObject();
 				JSONObject message = new JSONObject();
 				
+				JSONObject notification = new JSONObject();
+				
+				notification.put("title", "New match with" + match.getParticipant2().getName());
+				notification.put("body", "Write your first message"); 
+				
 				JSONObject data = new JSONObject();
 				data.put("userId", Long.toString(match.getParticipant2().getId()));
 				data.put("matchId", Long.toString(match.getId()));
+				data.put("type", "match");
 				//data.put("image", mediaService.convertImageToString(match.getParticipant2().getProfileImage(), 100, 100));
 				
 				message.put("token", dev.getDeviceToken());
 				message.put("data", data);
+				message.put("notification", notification);
 				body.put("message", message);
 				
 				HttpEntity<String> req = new HttpEntity<>(body.toString(), headers);
@@ -179,13 +185,20 @@ public class NotificationServiceImpl implements NotificationService{
 				JSONObject body = new JSONObject();
 				JSONObject message = new JSONObject();
 				
+				JSONObject notification = new JSONObject();
+				
+				notification.put("title", "New match with" + match.getParticipant1().getName());
+				notification.put("body", "Write your first message"); 
+				
 				JSONObject data = new JSONObject();
 				data.put("userId", Long.toString(match.getParticipant1().getId()));
 				data.put("matchId", Long.toString(match.getId()));
+				data.put("type", "match");
 				//data.put("image", mediaService.convertImageToString(match.getParticipant1().getProfileImage(), 100, 1000));
 				
 				message.put("token", dev.getDeviceToken());
 				message.put("data", data);
+				message.put("notification", notification);
 				body.put("message", message);
 				
 				HttpEntity<String> req = new HttpEntity<>(body.toString(), headers);
