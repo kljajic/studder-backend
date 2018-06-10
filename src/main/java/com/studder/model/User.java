@@ -60,6 +60,9 @@ public class User implements Serializable {
 	
 	private String newPw;
 	
+	@Transient
+	private Boolean firstTime;
+	
 	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private Gender userGender;
@@ -373,4 +376,13 @@ public class User implements Serializable {
 	public void setFirstTimeLogin(Boolean firstTimeLogin) {
 		this.firstTimeLogin = firstTimeLogin;
 	}
+
+	public Boolean getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(Boolean firstTime) {
+		this.firstTime = firstTime;
+	}
+	
 }

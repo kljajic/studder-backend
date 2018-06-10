@@ -57,7 +57,9 @@ public class SecurityServiceImpl implements SecurityService {
 				
 				if(returnUser.getFirstTimeLogin()) {
 					returnUser.setFirstTimeLogin(false);
-					returnUser = userRepository.save(returnUser);
+					returnUser.setFirstTime(true);
+				} else {
+					returnUser.setFirstTime(false);
 				}
 				
 				return returnUser;
