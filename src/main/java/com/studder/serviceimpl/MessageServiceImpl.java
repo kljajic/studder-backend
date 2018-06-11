@@ -1,7 +1,11 @@
 package com.studder.serviceimpl;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
+import com.google.protobuf.Api;
+import com.notification.OAuth2Google;
 import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.Message;
 import com.studder.model.MessageStatus;
@@ -31,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
 	private final UserService userService;
 	private final NotificationService notificationService;
 	
+	
 	@Autowired
 	public MessageServiceImpl(MessageRepository messageRepository, 
 							  MatchService matchService,
@@ -42,8 +56,11 @@ public class MessageServiceImpl implements MessageService {
 		this.notificationService = notificationService;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.studder.service.MessageService#createMessage(com.studder.model.Message, java.lang.Long)
+	 */
 	@Override
-	public void createMessage(Message message, Long matchId) {
+	public Message createMessage(Message message, Long matchId) {
 		UserMatch match = matchService.getMathc(matchId);
 		
 		User sender = userService.getLoggedUser();
@@ -58,7 +75,7 @@ public class MessageServiceImpl implements MessageService {
 		match.setLastMessage(message.getText());
 		match.setLastMessageSeen(false);
 		match.setLastMessageDate(message.getTimeRecieved());;
-		matchService.createMatch(match);
+		match = matchService.createMatch(match);
 		LOGGER.info("Match for message updated -> lastMessage, lastMessageSeen for matchId " + matchId);
 		
 		LOGGER.info("Match for message updated -> notifying the user for match id" + matchId);
@@ -68,6 +85,7 @@ public class MessageServiceImpl implements MessageService {
 		
 		
 		LOGGER.info("Message for " + matchId + " is successfully created");
+		return message;
 	}
 
 	@Override

@@ -28,9 +28,9 @@ public class MessageController {
 	}
 	
 	@PostMapping("/{matchId}")
-	public void createMessage(@RequestBody @Valid Message message,
+	public Message createMessage(@RequestBody @Valid Message message,
 			@PathVariable("matchId") @NotNull @Valid Long matchId) {
-		messageService.createMessage(message, matchId);
+		return messageService.createMessage(message, matchId);
 	}
 	
 	@GetMapping("/{messageId}")

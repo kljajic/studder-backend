@@ -79,6 +79,7 @@ public class SecurityController {
 				JSONObject data = new JSONObject();
 				data.put("Key-1", "JSA Data 1");
 				data.put("Key-2", "JSA Data 2");
+				data.put("type", "login");
 				
 				message.put("token", dev.getDeviceToken());
 				message.put("notification", notification);
