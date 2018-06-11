@@ -67,5 +67,13 @@ public class UserController {
 		});
 		return users;
 	}
+	
+	@GetMapping("/getForMarking")
+	public List<User> getUsersForMarking() {
+		
+		List<User> users = userService.getUsersForMarking();
+				
+		return users;
+	}
 
 }

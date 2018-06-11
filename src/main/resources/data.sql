@@ -6,7 +6,7 @@ insert into user(id, birthday, description, is_deactivated, is_private, last_onl
 	values(2, '1992-06-13', 'Description for user 2', false, false, '2018-05-21', 45.267136, 19.833549, 'Snjezana', true, '$2a$10$jml9.0FXGJ/lzMFE8TfSge8zCxYlCJ4Xe8XquxoXHrB7fTuLoRKY.', '2018-05-21', 11.0, true, 'Snjeguljica', 'FEMAIL', 'FEMAIL', 'username2', 'Novi Sad', 2);
 
 insert into user(id, birthday, description, is_deactivated, is_private, last_online, latitude, longitude, name, online_status, password, profile_created, radius, share_location, surname, swipe_throw, user_gender, username, city, profile_image)
-	values(3, '1996-04-07', 'Description for user 3', false, false, '2018-05-22', 45.267136, 19.833549, 'Ruzica', true, '$2a$10$TUQHIPaByPC4fkAkKA0d2uHOIvuxFphuScCCO2bWOvNclVDK410T6', '2018-05-21', 18.0, true, 'Trnova', 'MALE', 'FEMAIL', 'username3', 'Novi Sad', 3);
+	values(3, '1996-04-07', 'Description for user 3', false, false, '2018-05-22', 45.267136, 19.933549, 'Ruzica', true, '$2a$10$TUQHIPaByPC4fkAkKA0d2uHOIvuxFphuScCCO2bWOvNclVDK410T6', '2018-05-21', 18.0, true, 'Trnova', 'MALE', 'FEMAIL', 'username3', 'Novi Sad', 3);
 
 insert into user(id, birthday, description, is_deactivated, is_private, last_online, latitude, longitude, name, online_status, password, profile_created, radius, share_location, surname, swipe_throw, user_gender, username, city, profile_image)
 	values(4, '1994-01-01', 'Description for user 4', false, false, '2018-05-22', 46.100376, 19.667587, 'Darko', true, '$2a$10$shRcJ2DcdxCHSv5zhPaQ4.tg16ZMb0nxSHFW8Tg/cB4x0w5J5uptS', '2018-05-22', 9.0, true, 'Tacic', 'FEMAIL', 'MALE', 'username4', 'Novi Sad', 3);
