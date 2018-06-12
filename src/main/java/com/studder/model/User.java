@@ -53,7 +53,7 @@ public class User implements Serializable {
 	private Boolean isPrivate;
 	private Boolean isDeactivated;
 	private Long profileImage;
-	@Column(columnDefinition = "boolean default true", nullable = false)
+	@Column(columnDefinition = "boolean default true")
 	private Boolean firstTimeLogin;
 	
 	private String city;

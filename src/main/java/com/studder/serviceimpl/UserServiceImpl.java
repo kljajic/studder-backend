@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
 		user.setLastOnline(new Date());
 		user.setOnlineStatus(false);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setFirstTimeLogin(true);
 		System.out.println("PW JE: " + user.getPassword());
 		userRepository.save(user);
 		LOGGER.info("User " + user.getUsername() + " is successfully created");
