@@ -23,5 +23,7 @@ public interface UserService extends UserDetailsService {
 	List<User> getUsersForSwiping(); 
 	
 	void setLocationForUser(Double longitude, Double latitude);
+
+	List<User> getUsersForMarking();
 	
 }

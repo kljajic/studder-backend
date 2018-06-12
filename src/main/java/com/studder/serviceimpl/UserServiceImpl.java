@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.User;
+import com.studder.model.UserMatch;
+import com.studder.repository.MatchRepository;
 import com.studder.repository.UserRepository;
 import com.studder.service.UserService;
 
@@ -27,10 +29,12 @@ public class UserServiceImpl implements UserService {
 	private static Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	private final UserRepository userRepository;
+	private final MatchRepository matchRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(MatchRepository matchRepository,UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		this.matchRepository = matchRepository;
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
@@ -48,6 +52,7 @@ public class UserServiceImpl implements UserService {
 		user.setLastOnline(new Date());
 		user.setOnlineStatus(false);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setFirstTimeLogin(true);
 		System.out.println("PW JE: " + user.getPassword());
 		userRepository.save(user);
 		LOGGER.info("User " + user.getUsername() + " is successfully created");
@@ -73,6 +78,8 @@ public class UserServiceImpl implements UserService {
 		//existingUser.setBirthday(user.getBirthday());
 		if(user.getDescription() != null)
 			existingUser.setDescription(user.getDescription());
+		if(user.getCity() != null)
+			existingUser.setCity(user.getCity());
 		if(user.getIsPrivate() != null)
 			existingUser.setIsPrivate(user.getIsPrivate());
 		if(user.getName() != null)
@@ -139,6 +146,28 @@ public class UserServiceImpl implements UserService {
 		
 		LOGGER.info("Users are successfully fetched");
 		return usersForSwipping;
+	}
+	
+	@Override
+	public List<User> getUsersForMarking() {
+		User user = getLoggedUser();
+		List<UserMatch> userMatches = matchRepository.getMatchesByParticipant1IdOrParticipant2Id(user.getId());
+		List<User> matchUsers = new ArrayList<User>();
+		
+		for(UserMatch um : userMatches) {
+			if(um.getParticipant1().getId().equals(user.getId())) {
+				matchUsers.add(um.getParticipant2());
+			} else {
+				matchUsers.add(um.getParticipant1());
+			}
+		}
+		
+		List<User> radiusUsers = matchUsers.stream()
+				.filter(userForSwipe -> calculateDestanceBetweenUsers(user.getId(), userForSwipe.getId()) < user
+						.getRadius())
+				.collect(Collectors.toList());
+		
+		return radiusUsers;
 	}
 	
 	@Override

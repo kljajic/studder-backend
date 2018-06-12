@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -52,10 +53,15 @@ public class User implements Serializable {
 	private Boolean isPrivate;
 	private Boolean isDeactivated;
 	private Long profileImage;
+	@Column(columnDefinition = "boolean default true")
+	private Boolean firstTimeLogin;
 	
 	private String city;
 	
 	private String newPw;
+	
+	@Transient
+	private Boolean firstTime;
 	
 	//@NotNull
 	@Enumerated(EnumType.STRING)
@@ -361,6 +367,22 @@ public class User implements Serializable {
 
 	public void setUserDeviceToken(String userDeviceToken) {
 		this.userDeviceToken = userDeviceToken;
+	}
+
+	public Boolean getFirstTimeLogin() {
+		return firstTimeLogin;
+	}
+
+	public void setFirstTimeLogin(Boolean firstTimeLogin) {
+		this.firstTimeLogin = firstTimeLogin;
+	}
+
+	public Boolean getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(Boolean firstTime) {
+		this.firstTime = firstTime;
 	}
 	
 }

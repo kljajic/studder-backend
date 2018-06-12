@@ -1,9 +1,16 @@
 package com.studder.serviceimpl;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +32,10 @@ import com.studder.service.UserService;
 @Transactional
 public class MediaServiceImpl implements MediaService {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(MediaServiceImpl.class);
+	private static final String FORMAT_JPG = "jpg";
 	
+	private static Logger LOGGER = LoggerFactory.getLogger(MediaServiceImpl.class);
+
 	private final MediaRepository mediaRepository;
 	private final UserService userService;
 	private final FileService fileService;
@@ -90,7 +99,7 @@ public class MediaServiceImpl implements MediaService {
 	@Override
 	public List<Media> getMediasForUser() {
 		User user = userService.getLoggedUser();
-    LOGGER.info("Fetching media for user with username " + user.getUsername());
+		LOGGER.info("Fetching media for user with username " + user.getUsername());
 		List<Media> userMedias = mediaRepository.getMediaByUserId(user.getId());
 		LOGGER.info("User medias are successfully fetched");
 		return userMedias;
@@ -131,5 +140,39 @@ public class MediaServiceImpl implements MediaService {
 		Media media = this.getMediaById(mediaId);
 		return fileService.readFile(media.getPath(), media.getName());
 	}
+
+	@Override
+	public String convertImageToString(Long profileImageId, int width, int height) {
+		LOGGER.info("Profile image converted to string with id " + profileImageId);
+		String base64Encoded;
+		MediaDto mediaDto = getMedia(profileImageId);
+		try {
+			BufferedImage originalImage;
+			originalImage = ImageIO.read(new ByteArrayInputStream(mediaDto.getBytes()));
+			originalImage = resize(originalImage, width, height);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(originalImage, FORMAT_JPG, baos);
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+			base64Encoded = DatatypeConverter.printBase64Binary(imageInByte);
+			return base64Encoded;
+		} catch (Exception e) {
+			LOGGER.info("Profile image failed to convert to string with id " + profileImageId + "; error: " + e.getMessage());
+		}
+		return null;
+	}
+	
+	public static BufferedImage resize(BufferedImage img, int newW, int newH) {  
+		
+		if(newW == -1 || newH == -1) {
+			return img;
+		}
+		BufferedImage newImage = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_RGB);
+		Graphics g = newImage.createGraphics();
+		g.drawImage(img, 0, 0, newW, newH, null);
+		g.dispose();
+		return img;
+  }
 
 }

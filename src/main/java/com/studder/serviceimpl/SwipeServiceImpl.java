@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.studder.model.UserMatch;
 import com.studder.exception.DataBaseManipulationException;
 import com.studder.model.Swipe;
 import com.studder.model.User;
+import com.studder.model.UserMatch;
 import com.studder.repository.SwipeRepository;
 import com.studder.service.MatchService;
+import com.studder.service.NotificationService;
 import com.studder.service.SwipeService;
 import com.studder.service.UserService;
 
@@ -27,15 +28,17 @@ public class SwipeServiceImpl implements SwipeService {
 	private final SwipeRepository swipeRepository;
 	private final UserService userService;
 	private final MatchService matchService;
-	
+	private final NotificationService notificationService;
 	@Autowired
 	public SwipeServiceImpl(SwipeRepository swipeRepository, 
 							UserService userService,
 							MatchService matchService,
-							RestTemplate restTemplate) {
+							RestTemplate restTemplate,
+							NotificationService notificationService) {
 		this.swipeRepository = swipeRepository;
 		this.userService = userService;
 		this.matchService = matchService;
+		this.notificationService = notificationService;
 	}
 	
 	@Override
@@ -62,7 +65,8 @@ public class SwipeServiceImpl implements SwipeService {
 		if(otherUserSwiped != null && otherUserSwiped.getIsLiked()) {
 			LOGGER.info(liked.getUsername() + "have already liked " + liker.getUsername() + ". Creating new mathc");
 			UserMatch match = new UserMatch(new Date(), liker, liked);
-			matchService.createMatch(match);
+			UserMatch userMatch  = matchService.createMatch(match);
+			notificationService.notifyMatch(userMatch);
 			LOGGER.info("Mathc is successfully created");
 		}
 		
