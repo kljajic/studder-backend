@@ -67,7 +67,7 @@ insert into user_match(id, participant1_id, participant2_id, last_message, last_
 --Insert into media
 insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (1, "png8.jpg","username1", "Some description 1", '2018-05-05', false, 1, "image/jpg");
 insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (2, "png17.jpg","username1", "Some description 2", '2018-05-05', false, 1, "image/jpg");
-insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (3, "png11.jpg","username2", "Some description 4", '2018-05-05', false, 2, "image/jpg");
+insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (3, "png11.jpeg","username2", "Some description 4", '2018-05-05', false, 2, "image/jpg");
 insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (4, "png14.jpg","username3", "Some description 5", '2018-05-05', false, 3, "image/jpg");
 insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (5, "png4.jpg","username4", "Some description 6", '2018-05-05', false, 4, "image/jpg");
 insert into media(id, name, path, description, time_added, is_private, user_id, content_type) values (6, "png6.jpg","username4", "Some description 7", '2018-05-05', false, 4, "image/jpg");
