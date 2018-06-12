@@ -75,7 +75,8 @@ public class UserServiceImpl implements UserService {
 			LOGGER.error("Given username could not be found");
 			throw new DataBaseManipulationException("User with " + user.getUsername() + "doesn't exist.");
 		}
-		//existingUser.setBirthday(user.getBirthday());
+		if(user.getBirthday() != null)
+			   existingUser.setBirthday(user.getBirthday());
 		if(user.getDescription() != null)
 			existingUser.setDescription(user.getDescription());
 		if(user.getCity() != null)
@@ -233,6 +234,13 @@ public class UserServiceImpl implements UserService {
 		UserDetails userDetails = (UserDetails) new org.springframework.security.core.userdetails.User(
 				user.getUsername(), user.getPassword(), new ArrayList<>());
 		return userDetails;
+	}
+
+	@Override
+	public void setProfileImage(Long id) {
+		User u = getLoggedUser();
+		u.setProfileImage(id);
+		userRepository.save(u);
 	}
 
 }

@@ -26,4 +26,6 @@ public interface UserService extends UserDetailsService {
 
 	List<User> getUsersForMarking();
 	
+	void setProfileImage(Long id);
+	
 }

@@ -72,7 +72,7 @@ public class MediaController {
 	}
 	
 	
-	@PostMapping("/setProfileImage/{mediaId}")
+	@GetMapping("/setProfileImage/{mediaId}")
 	public boolean setProfileImage(@PathVariable("mediaId") @NotNull @Valid Long mediaId){
 		
 		if(userService.getLoggedUser() == null) {
@@ -81,6 +81,7 @@ public class MediaController {
 		
 		User user = userService.getLoggedUser();
 		user.setProfileImage(mediaId);
+		userService.setProfileImage(mediaId);
 		
 		return true;
 	}
