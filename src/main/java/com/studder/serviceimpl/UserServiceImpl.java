@@ -94,6 +94,10 @@ public class UserServiceImpl implements UserService {
 			existingUser.setUserGender(user.getUserGender());
 		if(user.getSwipeThrow() != null)
 			existingUser.setSwipeThrow(user.getSwipeThrow());
+		if(user.getLatitude() != null)
+			existingUser.setLatitude(user.getLatitude());
+		if(user.getLongitude()!= null)
+			existingUser.setLongitude(user.getLongitude());
 		if(user.getNewPw() != null && user.getPassword() != null){
 			if(passwordEncoder.matches(user.getPassword(), existingUser.getPassword())){
 				existingUser.setPassword(passwordEncoder.encode(user.getNewPw()));
