@@ -80,4 +80,12 @@ public class SwipeServiceImpl implements SwipeService {
 		return existingSwipe;
 	}
 
+	@Override
+	public Integer getSwipesCountForUser(Long likerId) {
+		LOGGER.info("Ferching swipe count for user with id: " + likerId);
+		Integer swipesCount = swipeRepository.getSwipesCountForUser(likerId);
+		LOGGER.info("Swipe count is successfully fetched");
+		return swipesCount;
+	}
+
 }

@@ -1,5 +1,10 @@
 package com.studder.controller;
 
+
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.studder.dto.MediaDto;
 import com.studder.model.Media;
 import com.studder.model.User;
 import com.studder.service.MediaService;

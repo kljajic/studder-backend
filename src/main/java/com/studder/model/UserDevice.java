@@ -9,8 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class UserDevice implements Serializable{
+public class UserDevice implements Serializable {
 	
+	private static final long serialVersionUID = -457614465847337521L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
