@@ -3,6 +3,10 @@ package com.studder.serviceimpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -144,14 +148,47 @@ public class UserServiceImpl implements UserService {
 		User user = getLoggedUser();
 		LOGGER.info("Fetching users for swiping for user " + user.getUsername());
 		
+		List<UserMatch> userMatches = matchRepository.getMatchesByParticipant1IdOrParticipant2Id(user.getId());
+		List<User> matchUsers = new ArrayList<User>();
+		
+		for(UserMatch um : userMatches) {
+			if(um.getParticipant1().getId().equals(user.getId())) {
+				matchUsers.add(um.getParticipant2());
+			} else {
+				matchUsers.add(um.getParticipant1());
+			}
+		}
+		
 		List<User> usersForSwipping = userRepository.getUsersForSwiping(user.getId(), user.getSwipeThrow()).stream()
 				.filter(userForSwipe -> calculateDestanceBetweenUsers(user.getId(), userForSwipe.getId()) < user
 						.getRadius())
 				.collect(Collectors.toList());
+		List<User> finalUsersForSwipe = new ArrayList<User>();
+		
+		for(int j = 0;j < usersForSwipping.size();j++) {
+			boolean exists = false;
+			for(int i = 0;i < matchUsers.size();i++) {
+				if(usersForSwipping.get(j) == matchUsers.get(i)) {
+					exists = true;
+				}
+			}
+			
+			if(!exists) {
+				finalUsersForSwipe.add(usersForSwipping.get(j));
+			}
+		}
+		
+		finalUsersForSwipe = finalUsersForSwipe.stream().filter(distinctByKey(User::getId)).collect(Collectors.toList());
 		
 		LOGGER.info("Users are successfully fetched");
-		return usersForSwipping;
+		return finalUsersForSwipe;
 	}
+	
+	public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor)
+    {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
 	
 	@Override
 	public List<User> getUsersForMarking() {
